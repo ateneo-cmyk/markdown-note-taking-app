@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Studio - Editor & Gestor de Notas</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Highlight.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Marked.js (Conversión de Markdown a HTML en vivo) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  
+  <!-- DOMPurify (Sanitización contra XSS) -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header / Barra Superior -->
+  <header class="app-header">
+    <div class="logo-container">
+      <div class="logo-icon">M↓</div>
+      <div class="app-title">Markdown Studio</div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-save" class="btn btn-primary" title="Guardar cambios (Ctrl+S)">
+        <span>💾</span> Guardar
+      </button>
+      <button id="btn-grammar" class="btn btn-grammar" title="Revisar ortografía y gramática">
+        <span>✨</span> Gramática
+      </button>
+      <button id="btn-download" class="btn btn-secondary" title="Descargar archivo Markdown">
+        <span>📥</span> Descargar
+      </button>
+      <button id="btn-delete" class="btn btn-danger" title="Eliminar nota actual" style="display: none;">
+        <span>🗑️</span>
+      </button>
+      <button id="btn-theme" class="btn icon-btn" title="Cambiar tema Claro / Oscuro">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal de la App -->
+  <div class="app-container">
+    
+    <!-- Sidebar / Barra Lateral -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <button id="btn-new-note" class="btn btn-primary" style="width: 100%;">
+          <span>➕</span> Nueva Nota
+        </button>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-notes" class="search-input" placeholder="Buscar notas...">
+        </div>
+
+        <form id="upload-form" class="upload-card">
+          <label for="note-file" class="upload-label">
+            <span>📁</span> <span>Subir archivo .md</span>
+          </label>
+          <input type="file" id="note-file" name="file" accept=".md,.txt,.markdown" style="display: none;">
+        </form>
+      </div>
+
+      <ul id="notes-list" class="notes-list">
+        <!-- Generado dinámicamente con JavaScript -->
+      </ul>
+    </aside>
+
+    <!-- Workspace / Área de Trabajo -->
+    <main class="workspace">
+      
+      <!-- Barra de título de la nota -->
+      <div class="note-meta-bar">
+        <input type="text" id="note-title" class="title-input" placeholder="Título de la nota (ej: Mi primera nota)..." value="Nota sin título">
+      </div>
+
+      <!-- Barra de herramientas Markdown -->
+      <div class="markdown-toolbar">
+        <button class="tool-btn" data-action="h1" title="Encabezado 1"><b>H1</b></button>
+        <button class="tool-btn" data-action="h2" title="Encabezado 2"><b>H2</b></button>
+        <button class="tool-btn" data-action="h3" title="Encabezado 3"><b>H3</b></button>
+        <div class="tool-separator"></div>
+        <button class="tool-btn" data-action="bold" title="Negrita (Ctrl+B)"><b>B</b></button>
+        <button class="tool-btn" data-action="italic" title="Cursiva (Ctrl+I)"><i>I</i></button>
+        <button class="tool-btn" data-action="strike" title="Tachado"><s>S</s></button>
+        <div class="tool-separator"></div>
+        <button class="tool-btn" data-action="quote" title="Cita">❝</button>
+        <button class="tool-btn" data-action="code" title="Código en línea"><code>&lt;&gt;</code></button>
+        <button class="tool-btn" data-action="codeblock" title="Bloque de código"><code>{ }</code></button>
+        <div class="tool-separator"></div>
+        <button class="tool-btn" data-action="link" title="Enlace">🔗</button>
+        <button class="tool-btn" data-action="ul" title="Lista con viñetas">• Lista</button>
+        <button class="tool-btn" data-action="ol" title="Lista numerada">1. Lista</button>
+        <button class="tool-btn" data-action="task" title="Lista de tareas">☑ Tarea</button>
+        <button class="tool-btn" data-action="table" title="Tabla">▦ Tabla</button>
+      </div>
+
+      <!-- Split: Editor y Vista Previa -->
+      <div class="editor-split">
+        
+        <!-- Panel Izquierdo: Editor Raw -->
+        <div class="pane pane-editor">
+          <div class="pane-header">
+            <span>Markdown</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Edición en tiempo real</span>
+          </div>
+          <textarea id="markdown-input" class="editor-textarea" placeholder="Escribe o pega aquí tu contenido en Markdown..."></textarea>
+        </div>
+
+        <!-- Panel Derecho: Vista Previa HTML en Vivo -->
+        <div class="pane pane-preview">
+          <div class="pane-header">
+            <span>Vista Previa</span>
+            <button id="btn-copy-html" class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;">Copiar HTML</button>
+          </div>
+          <div id="preview-output" class="preview-container markdown-body">
+            <!-- Renderizado dinámico en vivo -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Barra de Estado Inferior -->
+      <footer class="status-bar">
+        <div class="status-stats">
+          <span id="stat-words">0 palabras</span>
+          <span>•</span>
+          <span id="stat-chars">0 caracteres</span>
+          <span>•</span>
+          <span id="stat-lines">1 líneas</span>
+        </div>
+        <div id="save-status">Todos los cambios están al día</div>
+      </footer>
+
+    </main>
+
+    <!-- Panel Lateral Deslizante (Drawer) para Gramática -->
+    <div id="grammar-drawer" class="grammar-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>✨</span> Revisión Gramatical
+        </div>
+        <button id="btn-close-grammar" class="icon-btn" style="width: 28px; height: 28px;">✕</button>
+      </div>
+      <div id="grammar-content" class="drawer-content">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Presiona "Gramática" para analizar la nota con LanguageTool.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Contenedor de notificaciones Toast -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
