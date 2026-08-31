@@ -20,6 +20,9 @@
   <!-- DOMPurify (Sanitización contra XSS) -->
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 
+  <!-- html2pdf.js (Generador de PDF profesional) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -33,14 +36,27 @@
     </div>
 
     <div class="header-actions">
+      <select id="lang-select" class="lang-select" title="Seleccionar idioma / Select language">
+        <option value="es">🇪🇸 Español</option>
+        <option value="en">🇺🇸 English</option>
+      </select>
       <button id="btn-save" class="btn btn-primary" title="Guardar cambios (Ctrl+S)">
-        <span>💾</span> Guardar
+        <span>💾</span> <span data-i18n="btnSave">Guardar</span>
       </button>
       <button id="btn-grammar" class="btn btn-grammar" title="Revisar ortografía y gramática">
-        <span>✨</span> Gramática
+        <span>✨</span> <span data-i18n="btnGrammar">Gramática</span>
+      </button>
+      <button id="btn-presentation" class="btn btn-secondary" title="Modo Presentación (F5)">
+        <span>📽️</span> <span data-i18n="btnPresentation">Presentar</span>
+      </button>
+      <button id="btn-export-pdf" class="btn btn-secondary" title="Exportar a PDF">
+        <span>📄</span> <span data-i18n="btnExportPdf">PDF</span>
       </button>
       <button id="btn-download" class="btn btn-secondary" title="Descargar archivo Markdown">
-        <span>📥</span> Descargar
+        <span>📥</span> <span data-i18n="btnDownload">Descargar</span>
+      </button>
+      <button id="btn-reader" class="btn icon-btn" title="Modo Lectura / Reader Mode">
+        📖
       </button>
       <button id="btn-delete" class="btn btn-danger" title="Eliminar nota actual" style="display: none;">
         <span>🗑️</span>
@@ -58,17 +74,17 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <button id="btn-new-note" class="btn btn-primary" style="width: 100%;">
-          <span>➕</span> Nueva Nota
+          <span>➕</span> <span data-i18n="btnNewNote">Nueva Nota</span>
         </button>
 
         <div class="search-box">
           <span class="search-icon">🔍</span>
-          <input type="text" id="search-notes" class="search-input" placeholder="Buscar notas...">
+          <input type="text" id="search-notes" class="search-input" placeholder="Buscar notas..." data-i18n-placeholder="searchPlaceholder">
         </div>
 
         <form id="upload-form" class="upload-card">
           <label for="note-file" class="upload-label">
-            <span>📁</span> <span>Subir archivo .md</span>
+            <span>📁</span> <span data-i18n="uploadLabel">Subir archivo .md</span>
           </label>
           <input type="file" id="note-file" name="file" accept=".md,.txt,.markdown" style="display: none;">
         </form>
@@ -84,7 +100,7 @@
       
       <!-- Barra de título de la nota -->
       <div class="note-meta-bar">
-        <input type="text" id="note-title" class="title-input" placeholder="Título de la nota (ej: Mi primera nota)..." value="Nota sin título">
+        <input type="text" id="note-title" class="title-input" placeholder="Título de la nota (ej: Mi primera nota)..." data-i18n-placeholder="titlePlaceholder" value="Nota sin título">
       </div>
 
       <!-- Barra de herramientas Markdown -->
@@ -102,10 +118,10 @@
         <button class="tool-btn" data-action="codeblock" title="Bloque de código"><code>{ }</code></button>
         <div class="tool-separator"></div>
         <button class="tool-btn" data-action="link" title="Enlace">🔗</button>
-        <button class="tool-btn" data-action="ul" title="Lista con viñetas">• Lista</button>
-        <button class="tool-btn" data-action="ol" title="Lista numerada">1. Lista</button>
-        <button class="tool-btn" data-action="task" title="Lista de tareas">☑ Tarea</button>
-        <button class="tool-btn" data-action="table" title="Tabla">▦ Tabla</button>
+        <button class="tool-btn" data-action="ul" title="Lista con viñetas"><span data-i18n="toolUl">• Lista</span></button>
+        <button class="tool-btn" data-action="ol" title="Lista numerada"><span data-i18n="toolOl">1. Lista</span></button>
+        <button class="tool-btn" data-action="task" title="Lista de tareas"><span data-i18n="toolTask">☑ Tarea</span></button>
+        <button class="tool-btn" data-action="table" title="Tabla"><span data-i18n="toolTable">▦ Tabla</span></button>
       </div>
 
       <!-- Split: Editor y Vista Previa -->
@@ -115,16 +131,16 @@
         <div class="pane pane-editor">
           <div class="pane-header">
             <span>Markdown</span>
-            <span style="font-size: 0.75rem; color: var(--text-muted);">Edición en tiempo real</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);" data-i18n="editorSubtitle">Edición en tiempo real</span>
           </div>
-          <textarea id="markdown-input" class="editor-textarea" placeholder="Escribe o pega aquí tu contenido en Markdown..."></textarea>
+          <textarea id="markdown-input" class="editor-textarea" placeholder="Escribe o pega aquí tu contenido en Markdown..." data-i18n-placeholder="editorPlaceholder"></textarea>
         </div>
 
         <!-- Panel Derecho: Vista Previa HTML en Vivo -->
         <div class="pane pane-preview">
           <div class="pane-header">
-            <span>Vista Previa</span>
-            <button id="btn-copy-html" class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;">Copiar HTML</button>
+            <span data-i18n="previewTitle">Vista Previa</span>
+            <button id="btn-copy-html" class="btn btn-secondary" style="padding: 2px 8px; font-size: 0.75rem;" data-i18n="btnCopyHtml">Copiar HTML</button>
           </div>
           <div id="preview-output" class="preview-container markdown-body">
             <!-- Renderizado dinámico en vivo -->
@@ -142,7 +158,7 @@
           <span>•</span>
           <span id="stat-lines">1 líneas</span>
         </div>
-        <div id="save-status">Todos los cambios están al día</div>
+        <div id="save-status" data-i18n="savedStatus">Todos los cambios están al día</div>
       </footer>
 
     </main>
@@ -151,15 +167,55 @@
     <div id="grammar-drawer" class="grammar-drawer">
       <div class="drawer-header">
         <div class="drawer-title">
-          <span>✨</span> Revisión Gramatical
+          <span>✨</span> <span data-i18n="grammarDrawerTitle">Revisión Gramatical</span>
         </div>
         <button id="btn-close-grammar" class="icon-btn" style="width: 28px; height: 28px;">✕</button>
       </div>
       <div id="grammar-content" class="drawer-content">
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Presiona "Gramática" para analizar la nota con LanguageTool.</p>
+        <p style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="grammarEmptyState">Presiona "Gramática" para analizar la nota con LanguageTool.</p>
       </div>
     </div>
 
+  </div>
+
+  <!-- Modal / Overlay de Modo Presentación -->
+  <div id="presentation-overlay" class="presentation-overlay" style="display: none;">
+    <div class="presentation-progress-bar" id="presentation-progress"></div>
+    <div class="presentation-header">
+      <div class="presentation-title" id="presentation-note-title">Título de la nota</div>
+      <div class="presentation-controls">
+        <span class="slide-counter" id="slide-counter">1 / 1</span>
+        <button id="btn-exit-presentation" class="icon-btn" title="Salir / Exit (Esc)">✕</button>
+      </div>
+    </div>
+    <div class="presentation-body">
+      <div id="slide-content" class="slide-content markdown-body">
+        <!-- Contenido dinámico de la diapositiva actual -->
+      </div>
+    </div>
+    <div class="presentation-footer">
+      <button id="btn-prev-slide" class="btn btn-secondary">◀ <span data-i18n="prevSlide">Anterior</span></button>
+      <div class="presentation-shortcuts-hint">
+        <span><kbd>←</kbd> <kbd>→</kbd> / <kbd>Espacio</kbd> <span data-i18n="slideNavHint">para navegar</span> | <kbd>Esc</kbd> <span data-i18n="slideExitHint">para salir</span></span>
+      </div>
+      <button id="btn-next-slide" class="btn btn-primary"><span data-i18n="nextSlide">Siguiente</span> ▶</button>
+    </div>
+  </div>
+
+  <!-- Modal / Overlay de Modo Lectura Limpia -->
+  <div id="reader-overlay" class="reader-overlay" style="display: none;">
+    <div class="reader-toolbar">
+      <div class="reader-title" id="reader-note-title">Título de la nota</div>
+      <div class="reader-actions">
+        <button id="btn-reader-print" class="btn btn-secondary"><span>🖨️</span> <span data-i18n="btnPrint">Imprimir</span></button>
+        <button id="btn-close-reader" class="icon-btn" title="Cerrar / Close (Esc)">✕</button>
+      </div>
+    </div>
+    <div class="reader-scroll-container">
+      <div id="reader-content" class="reader-content markdown-body">
+        <!-- Contenido renderizado -->
+      </div>
+    </div>
   </div>
 
   <!-- Contenedor de notificaciones Toast -->

@@ -39,19 +39,20 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 app.post('/grammar', async (req, res) => {
     const texto = req.body.text;
+    const idioma = req.body.language || 'es';
     
     if (!texto) {
         return res.status(400).send('Texto no proporcionado');
     }
 
     try {
-        // Corrección de la URL de LanguageTool (api.languagetool.org)
+        // Soporte multilingüe para LanguageTool (es, en-US, etc.)
         const respuesta = await fetch('https://api.languagetool.org/v2/check', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 text: texto,
-                language: 'es'
+                language: idioma
             })
         });
 
