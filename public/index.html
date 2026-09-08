@@ -14,6 +14,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
+  <!-- KaTeX for Mathematical LaTeX Formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+  <!-- Mermaid.js for Diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+
   <!-- Marked.js (Conversión de Markdown a HTML en vivo) -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   
@@ -112,6 +119,10 @@
         <button class="tool-btn" data-action="bold" title="Negrita (Ctrl+B)"><b>B</b></button>
         <button class="tool-btn" data-action="italic" title="Cursiva (Ctrl+I)"><i>I</i></button>
         <button class="tool-btn" data-action="strike" title="Tachado"><s>S</s></button>
+        <div class="tool-separator"></div>
+        <button class="tool-btn" data-action="mermaid" title="Diagrama (Mermaid)"><span data-i18n="toolDiagram">📊 Diagrama</span></button>
+        <button class="tool-btn" data-action="math" title="Fórmula Matemática (KaTeX)"><span data-i18n="toolMath">🧮 Fórmula</span></button>
+        <button class="tool-btn" data-action="callout" title="Alerta / Callout"><span data-i18n="toolCallout">💡 Alerta</span></button>
         <div class="tool-separator"></div>
         <button class="tool-btn" data-action="quote" title="Cita">❝</button>
         <button class="tool-btn" data-action="code" title="Código en línea"><code>&lt;&gt;</code></button>

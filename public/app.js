@@ -40,6 +40,9 @@ const i18n = {
     toolOl: "1. Lista",
     toolTask: "☑ Tarea",
     toolTable: "▦ Tabla",
+    toolDiagram: "📊 Diagrama",
+    toolMath: "🧮 Fórmula",
+    toolCallout: "💡 Alerta",
     noNotesFound: "No se encontraron notas",
     words: (count) => `${count} ${count === 1 ? 'palabra' : 'palabras'}`,
     chars: (count) => `${count} caracteres`,
@@ -59,24 +62,49 @@ const i18n = {
     toastUploadStart: "Subiendo archivo...",
     toastUploadSuccess: "Archivo subido con éxito",
     toastUploadError: "Error al subir el archivo",
+    toastImagePasted: "¡Imagen insertada desde el portapapeles!",
+    toastImageDropped: "¡Imagen insertada correctamente!",
+    toastImageTooLarge: "La imagen es demasiado grande (máximo 5MB)",
     toastReplacementApplied: (oldW, newW) => `Reemplazado "${oldW}" por "${newW}"`,
     previewEmptyPlaceholder: "La vista previa aparecerá aquí conforme vayas escribiendo...",
-    defaultNoteContent: `# Bienvenido a tu nueva nota
+    defaultNoteContent: `# Bienvenido a Markdown Studio 🚀
 
-Empieza a escribir tus ideas aquí usando **Markdown** en tiempo real.
-
-- [x] Crear una nota
-- [ ] Explorar las herramientas
-- [ ] Revisar la gramática
-- [ ] Probar el modo Presentación (F5)
+Descubre las nuevas **capacidades de edición avanzada** en tiempo real:
 
 ---
 
-# Diapositiva 2: Formato
+## 📊 1. Diagramas Interactivos con Mermaid
 
-Puedes separar diapositivas fácilmente usando tres guiones \`---\`.
+\`\`\`mermaid
+graph TD
+    A[💡 Idea / Requerimiento] --> B[📝 Escribir Nota en Markdown]
+    B --> C{¿Revisar?}
+    C -->|Sí| D[✨ LanguageTool Gramática]
+    C -->|No| E[📽️ Modo Presentación]
+    D --> E
+    E --> F[📄 Exportar a PDF]
+\`\`\`
 
-> *"La simplicidad es la máxima sofisticación."*
+---
+
+## 🧮 2. Fórmulas Matemáticas con KaTeX
+
+Escribe fórmulas en línea como $E = mc^2$ o integrales en bloque:
+
+$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
+
+---
+
+## 💡 3. Alertas y Callouts Destacados
+
+> [!NOTE]
+> Puedes pegar imágenes directamente con **Ctrl + V** o arrastrarlas al editor.
+
+> [!TIP]
+> Presiona **F5** para iniciar el modo presentación a pantalla completa.
+
+> [!WARNING]
+> No olvides guardar tus notas importantes con **Ctrl + S**.
 `
   },
   en: {
@@ -117,6 +145,9 @@ Puedes separar diapositivas fácilmente usando tres guiones \`---\`.
     toolOl: "1. List",
     toolTask: "☑ Task",
     toolTable: "▦ Table",
+    toolDiagram: "📊 Diagram",
+    toolMath: "🧮 Math",
+    toolCallout: "💡 Callout",
     noNotesFound: "No notes found",
     words: (count) => `${count} ${count === 1 ? 'word' : 'words'}`,
     chars: (count) => `${count} characters`,
@@ -136,29 +167,55 @@ Puedes separar diapositivas fácilmente usando tres guiones \`---\`.
     toastUploadStart: "Uploading file...",
     toastUploadSuccess: "File uploaded successfully",
     toastUploadError: "Error uploading file",
+    toastImagePasted: "Image pasted from clipboard!",
+    toastImageDropped: "Image dropped successfully!",
+    toastImageTooLarge: "Image is too large (maximum 5MB)",
     toastReplacementApplied: (oldW, newW) => `Replaced "${oldW}" with "${newW}"`,
     previewEmptyPlaceholder: "Live preview will appear here as you type...",
-    defaultNoteContent: `# Welcome to your new note
+    defaultNoteContent: `# Welcome to Markdown Studio 🚀
 
-Start jotting down your thoughts here using **Markdown** in real-time.
-
-- [x] Create a note
-- [ ] Explore formatting tools
-- [ ] Check grammar & spelling
-- [ ] Try Presentation mode (F5)
+Explore the new **advanced editing capabilities** in real time:
 
 ---
 
-# Slide 2: Formatting
+## 📊 1. Interactive Diagrams with Mermaid
 
-You can easily separate slides by using three dashes \`---\`.
+\`\`\`mermaid
+graph TD
+    A[💡 Idea / Requirement] --> B[📝 Write Markdown Note]
+    B --> C{Check?}
+    C -->|Yes| D[✨ LanguageTool Grammar]
+    C -->|No| E[📽️ Presentation Mode]
+    D --> E
+    E --> F[📄 Export to PDF]
+\`\`\`
 
-> *"Simplicity is the ultimate sophistication."*
+---
+
+## 🧮 2. Mathematical Formulas with KaTeX
+
+Write inline math like $E = mc^2$ or block integrals:
+
+$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
+
+---
+
+## 💡 3. Highlighted Alerts and Callouts
+
+> [!NOTE]
+> You can paste images directly using **Ctrl + V** or drag them into the editor.
+
+> [!TIP]
+> Press **F5** to start full-screen presentation mode.
+
+> [!WARNING]
+> Remember to save your important notes with **Ctrl + S**.
 `
   }
 };
 
 let currentLang = localStorage.getItem('app_lang') || 'es';
+let currentTheme = localStorage.getItem('theme') || 'dark';
 
 // Elementos del DOM
 const langSelect = document.getElementById('lang-select');
@@ -218,6 +275,138 @@ let slides = [];
 let currentSlideIndex = 0;
 
 // ==========================================================================
+// INICIALIZACIÓN DE MERMAID Y MARKED
+// ==========================================================================
+if (window.mermaid) {
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: currentTheme === 'dark' ? 'dark' : 'default',
+    securityLevel: 'loose',
+    fontFamily: 'Inter, sans-serif'
+  });
+}
+
+if (window.marked) {
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    highlight: function(code, lang) {
+      if (lang === 'mermaid') {
+        return `<div class="mermaid">${code}</div>`;
+      }
+      if (window.hljs) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      }
+      return code;
+    }
+  });
+}
+
+// ==========================================================================
+// PROCESAMIENTO AVANZADO (KATEX, CALLOUTS, MERMAID)
+// ==========================================================================
+
+// 1. Renderizar Fórmulas Matemáticas (KaTeX)
+function procesarKaTeX(texto) {
+  if (!window.katex) return texto;
+
+  // Renderizar bloques $$...$$
+  let resultado = texto.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
+    try {
+      return katex.renderToString(formula.trim(), { displayMode: true, throwOnError: false });
+    } catch (e) {
+      return match;
+    }
+  });
+
+  // Renderizar en línea $...$ (sin saltos de línea)
+  resultado = resultado.replace(/\$([^\$\n]+?)\$/g, (match, formula) => {
+    try {
+      return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false });
+    } catch (e) {
+      return match;
+    }
+  });
+
+  return resultado;
+}
+
+// 2. Transformar Alertas / Callouts (GitHub/Obsidian style: [!NOTE], [!TIP], etc.)
+function procesarCallouts(html) {
+  const iconMap = {
+    NOTE: 'ℹ️',
+    TIP: '💡',
+    IMPORTANT: '📌',
+    WARNING: '⚠️',
+    CAUTION: '🛑'
+  };
+
+  return html.replace(/<blockquote>\s*<p>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]([\s\S]*?)<\/blockquote>/gi, (match, type, content) => {
+    const uppercaseType = type.toUpperCase();
+    const icon = iconMap[uppercaseType] || '💡';
+    const cleanContent = content.trim();
+
+    return `
+      <div class="callout callout-${type.toLowerCase()}">
+        <div class="callout-header">
+          <span class="callout-icon">${icon}</span>
+          <span>${uppercaseType}</span>
+        </div>
+        <div class="callout-content">
+          ${cleanContent}
+        </div>
+      </div>
+    `;
+  });
+}
+
+// 3. Renderizar Diagramas Mermaid en el contenedor dado
+async function renderizarDiagramasMermaid(container) {
+  if (!window.mermaid) return;
+
+  const nodos = container.querySelectorAll('.mermaid, pre code.language-mermaid');
+  if (nodos.length === 0) return;
+
+  // Convertir pre code en div.mermaid si fuera necesario
+  nodos.forEach((nodo, idx) => {
+    if (nodo.tagName.toLowerCase() === 'code') {
+      const parentPre = nodo.parentElement;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = nodo.textContent;
+      parentPre.replaceWith(div);
+    }
+  });
+
+  try {
+    await mermaid.run({
+      nodes: container.querySelectorAll('.mermaid')
+    });
+  } catch (err) {
+    console.warn('Error renderizando Mermaid:', err);
+  }
+}
+
+// 4. Sanitización segura con DOMPurify permitiendo SVG (Mermaid) y MathML (KaTeX)
+function sanitizarHTML(html) {
+  if (!window.DOMPurify) return html;
+
+  return DOMPurify.sanitize(html, {
+    ADD_TAGS: [
+      'svg', 'path', 'g', 'rect', 'circle', 'text', 'line', 'polygon', 'polyline', 'marker', 'defs', 'style', 'foreignObject',
+      'math', 'semantics', 'mrow', 'mi', 'mo', 'mn', 'msup', 'msub', 'mfrac', 'msqrt', 'mroot', 'mtable', 'mtr', 'mtd', 'annotation',
+      'span', 'div', 'mark', 'code', 'pre'
+    ],
+    ADD_ATTR: [
+      'd', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-dasharray', 'transform', 'class', 'id', 'xmlns',
+      'cx', 'cy', 'r', 'rx', 'ry', 'x', 'y', 'x1', 'y1', 'x2', 'y2', 'width', 'height', 'marker-end', 'marker-start',
+      'style', 'aria-hidden', 'role', 'title', 'data-action'
+    ]
+  });
+}
+
+// ==========================================================================
 // GESTIÓN DE IDIOMA (i18n)
 // ==========================================================================
 function setLanguage(lang) {
@@ -260,38 +449,34 @@ if (langSelect) {
 }
 
 // ==========================================================================
-// INICIALIZACIÓN DE MARKED.JS
-// ==========================================================================
-if (window.marked) {
-  marked.setOptions({
-    breaks: true,
-    gfm: true,
-    highlight: function(code, lang) {
-      if (window.hljs) {
-        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-        return hljs.highlight(code, { language }).value;
-      }
-      return code;
-    }
-  });
-}
-
-// ==========================================================================
 // 1. RENDERIZADO EN TIEMPO REAL
 // ==========================================================================
-function renderizarMarkdown() {
+async function renderizarMarkdown() {
   const t = i18n[currentLang];
-  const texto = markdownInput.value;
+  const textoOriginal = markdownInput.value;
   
-  if (!texto.trim()) {
+  if (!textoOriginal.trim()) {
     previewOutput.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">${t.previewEmptyPlaceholder}</p>`;
   } else {
-    const htmlCrudo = marked.parse(texto);
-    const htmlLimpio = window.DOMPurify ? DOMPurify.sanitize(htmlCrudo) : htmlCrudo;
+    // 1. Procesar fórmulas matemáticas KaTeX
+    const textoConMath = procesarKaTeX(textoOriginal);
+    
+    // 2. Parsear Markdown a HTML con Marked
+    const htmlCrudo = marked.parse(textoConMath);
+    
+    // 3. Transformar Callouts / Alertas
+    const htmlConCallouts = procesarCallouts(htmlCrudo);
+    
+    // 4. Sanitizar HTML
+    const htmlLimpio = sanitizarHTML(htmlConCallouts);
+    
     previewOutput.innerHTML = htmlLimpio;
+
+    // 5. Renderizar Diagramas Mermaid asíncronamente
+    await renderizarDiagramasMermaid(previewOutput);
   }
 
-  actualizarEstadisticas(texto);
+  actualizarEstadisticas(textoOriginal);
 }
 
 markdownInput.addEventListener('input', () => {
@@ -322,7 +507,75 @@ previewOutput.addEventListener('scroll', () => {
 });
 
 // ==========================================================================
-// 2. ESTADÍSTICAS DEL DOCUMENTO
+// 2. PEGAR Y ARRASTRAR IMÁGENES (CLIPBOARD & DRAG-AND-DROP)
+// ==========================================================================
+function insertarTextoEnCursor(textoInsertar) {
+  const start = markdownInput.selectionStart;
+  const end = markdownInput.selectionEnd;
+  markdownInput.setRangeText(textoInsertar, start, end, 'end');
+  markdownInput.focus();
+  renderizarMarkdown();
+  marcarModificado();
+}
+
+function procesarArchivoImagen(file, origen = 'paste') {
+  const t = i18n[currentLang];
+  if (!file || !file.type.startsWith('image/')) return;
+
+  if (file.size > 5 * 1024 * 1024) {
+    mostrarToast(t.toastImageTooLarge, 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    const nombre = file.name || 'image';
+    const markdownImg = `\n![${nombre}](${dataUrl})\n`;
+    
+    insertarTextoEnCursor(markdownImg);
+    mostrarToast(origen === 'paste' ? t.toastImagePasted : t.toastImageDropped, 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Pegar imagen con Ctrl+V
+markdownInput.addEventListener('paste', (e) => {
+  const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+  for (let item of items) {
+    if (item.kind === 'file' && item.type.startsWith('image/')) {
+      e.preventDefault();
+      const file = item.getAsFile();
+      procesarArchivoImagen(file, 'paste');
+      break;
+    }
+  }
+});
+
+// Arrastrar y soltar imagen en el editor
+markdownInput.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  markdownInput.classList.add('dragover');
+});
+
+markdownInput.addEventListener('dragleave', () => {
+  markdownInput.classList.remove('dragover');
+});
+
+markdownInput.addEventListener('drop', (e) => {
+  e.preventDefault();
+  markdownInput.classList.remove('dragover');
+  
+  if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+    const file = e.dataTransfer.files[0];
+    if (file.type.startsWith('image/')) {
+      procesarArchivoImagen(file, 'drop');
+    }
+  }
+});
+
+// ==========================================================================
+// 3. ESTADÍSTICAS DEL DOCUMENTO
 // ==========================================================================
 function actualizarEstadisticas(texto) {
   const t = i18n[currentLang];
@@ -350,7 +603,7 @@ function marcarGuardado() {
 }
 
 // ==========================================================================
-// 3. BARRA DE HERRAMIENTAS MARKDOWN
+// 4. BARRA DE HERRAMIENTAS MARKDOWN
 // ==========================================================================
 document.querySelectorAll('.tool-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -388,6 +641,15 @@ function insertarFormato(action) {
       break;
     case 'strike':
       reemplazo = `~~${seleccionado || 'strikethrough'}~~`;
+      break;
+    case 'mermaid':
+      reemplazo = `\n\`\`\`mermaid\ngraph TD\n    A[Inicio] --> B[Proceso]\n    B --> C[Fin]\n\`\`\`\n`;
+      break;
+    case 'math':
+      reemplazo = `\n$$\\int_{a}^{b} f(x) dx = F(b) - F(a)$$\n`;
+      break;
+    case 'callout':
+      reemplazo = `\n> [!NOTE]\n> ${seleccionado || 'Escribe aquí tu información destacada...'}\n`;
       break;
     case 'quote':
       reemplazo = `> ${seleccionado || 'Quote'}`;
@@ -427,7 +689,7 @@ function insertarFormato(action) {
 }
 
 // ==========================================================================
-// 4. GESTIÓN DE NOTAS (CRUD)
+// 5. GESTIÓN DE NOTAS (CRUD)
 // ==========================================================================
 async function cargarNotas() {
   try {
@@ -663,21 +925,20 @@ searchInput.addEventListener('input', (e) => {
 });
 
 // ==========================================================================
-// 5. EXPORTACIÓN A PDF PROFESIONAL (html2pdf.js)
+// 6. EXPORTACIÓN A PDF PROFESIONAL
 // ==========================================================================
 async function exportarPDF() {
   const t = i18n[currentLang];
   const titulo = noteTitle.value.trim() || 'Documento';
-  const texto = markdownInput.value.trim();
+  const textoOriginal = markdownInput.value.trim();
 
-  if (!texto) {
+  if (!textoOriginal) {
     mostrarToast(t.grammarEmptyInput, 'error');
     return;
   }
 
   mostrarToast(t.toastPdfStart, 'info');
 
-  // Crear contenedor temporal estilizado para exportación limpia
   const contenedorTemp = document.createElement('div');
   contenedorTemp.className = 'markdown-body';
   contenedorTemp.style.padding = '30px';
@@ -685,7 +946,6 @@ async function exportarPDF() {
   contenedorTemp.style.color = '#111827';
   contenedorTemp.style.fontFamily = 'Inter, sans-serif';
 
-  // Añadir encabezado con título
   const h1Titulo = document.createElement('h1');
   h1Titulo.textContent = titulo;
   h1Titulo.style.borderBottom = '2px solid #4f46e5';
@@ -694,11 +954,18 @@ async function exportarPDF() {
   h1Titulo.style.color = '#1e293b';
   contenedorTemp.appendChild(h1Titulo);
 
-  // Renderizar contenido
-  const htmlContent = marked.parse(texto);
+  // Procesar math, markdown y callouts
+  const textoMath = procesarKaTeX(textoOriginal);
+  const htmlRaw = marked.parse(textoMath);
+  const htmlCallouts = procesarCallouts(htmlRaw);
+  
   const divContenido = document.createElement('div');
-  divContenido.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
+  divContenido.innerHTML = sanitizarHTML(htmlCallouts);
   contenedorTemp.appendChild(divContenido);
+
+  // Renderizar Mermaid dentro del contenedor temporal
+  document.body.appendChild(contenedorTemp);
+  await renderizarDiagramasMermaid(contenedorTemp);
 
   const opciones = {
     margin: [12, 12, 12, 12],
@@ -713,31 +980,29 @@ async function exportarPDF() {
       await html2pdf().set(opciones).from(contenedorTemp).save();
       mostrarToast(t.toastPdfSuccess, 'success');
     } else {
-      // Fallback a impresión nativa
       window.print();
     }
   } catch (err) {
     console.error('Error generando PDF:', err);
     mostrarToast(t.toastPdfError, 'error');
+  } finally {
+    contenedorTemp.remove();
   }
 }
 
 btnExportPdf.addEventListener('click', exportarPDF);
 
 // ==========================================================================
-// 6. MODO PRESENTACIÓN (SLIDESHOW)
+// 7. MODO PRESENTACIÓN (SLIDESHOW CON MERMAID Y KATEX)
 // ==========================================================================
-function iniciarPresentacion() {
+async function iniciarPresentacion() {
   const texto = markdownInput.value.trim();
   if (!texto) {
     mostrarToast(i18n[currentLang].grammarEmptyInput, 'error');
     return;
   }
 
-  // Dividir en diapositivas usando '---' o '___' o encabezados '# '
   let partes = texto.split(/\n\s*---\s*\n|\n\s*___\s*\n/);
-
-  // Si no se usaron separadores '---', dividir inteligentemente por encabezados principales
   if (partes.length === 1 && texto.includes('\n# ')) {
     partes = texto.split(/(?=\n# )/);
   }
@@ -749,39 +1014,41 @@ function iniciarPresentacion() {
   presentationNoteTitle.textContent = noteTitle.value.trim() || 'Presentación';
   
   presentationOverlay.style.display = 'flex';
-  renderizarDiapositivaActual();
+  await renderizarDiapositivaActual();
 }
 
-function renderizarDiapositivaActual() {
+async function renderizarDiapositivaActual() {
   if (slides.length === 0) return;
 
   const rawSlide = slides[currentSlideIndex];
-  const htmlRaw = marked.parse(rawSlide);
-  const htmlLimpio = window.DOMPurify ? DOMPurify.sanitize(htmlRaw) : htmlRaw;
+  const mathSlide = procesarKaTeX(rawSlide);
+  const htmlRaw = marked.parse(mathSlide);
+  const htmlCallouts = procesarCallouts(htmlRaw);
+  const htmlLimpio = sanitizarHTML(htmlCallouts);
 
   slideContent.innerHTML = htmlLimpio;
   slideCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
 
-  // Actualizar barra de progreso
   const porcentaje = ((currentSlideIndex + 1) / slides.length) * 100;
   presentationProgressBar.style.width = `${porcentaje}%`;
 
-  // Deshabilitar botones en extremos
   btnPrevSlide.disabled = currentSlideIndex === 0;
   btnNextSlide.disabled = currentSlideIndex === slides.length - 1;
+
+  await renderizarDiagramasMermaid(slideContent);
 }
 
-function siguienteDiapositiva() {
+async function siguienteDiapositiva() {
   if (currentSlideIndex < slides.length - 1) {
     currentSlideIndex++;
-    renderizarDiapositivaActual();
+    await renderizarDiapositivaActual();
   }
 }
 
-function anteriorDiapositiva() {
+async function anteriorDiapositiva() {
   if (currentSlideIndex > 0) {
     currentSlideIndex--;
-    renderizarDiapositivaActual();
+    await renderizarDiapositivaActual();
   }
 }
 
@@ -795,16 +1062,19 @@ btnPrevSlide.addEventListener('click', anteriorDiapositiva);
 btnExitPresentation.addEventListener('click', cerrarPresentacion);
 
 // ==========================================================================
-// 7. MODO LECTURA LIMPIA (READER VIEW)
+// 8. MODO LECTURA LIMPIA (READER VIEW)
 // ==========================================================================
-function iniciarModoLectura() {
-  const texto = markdownInput.value.trim();
+async function iniciarModoLectura() {
+  const textoOriginal = markdownInput.value.trim();
   readerNoteTitle.textContent = noteTitle.value.trim() || 'Nota';
   
-  const htmlRaw = marked.parse(texto);
-  readerContent.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlRaw) : htmlRaw;
+  const mathText = procesarKaTeX(textoOriginal);
+  const htmlRaw = marked.parse(mathText);
+  const htmlCallouts = procesarCallouts(htmlRaw);
+  readerContent.innerHTML = sanitizarHTML(htmlCallouts);
   
   readerOverlay.style.display = 'flex';
+  await renderizarDiagramasMermaid(readerContent);
 }
 
 function cerrarModoLectura() {
@@ -816,7 +1086,7 @@ btnCloseReader.addEventListener('click', cerrarModoLectura);
 btnReaderPrint.addEventListener('click', () => window.print());
 
 // ==========================================================================
-// 8. ASISTENTE DE GRAMÁTICA (LanguageTool)
+// 9. ASISTENTE DE GRAMÁTICA (LanguageTool)
 // ==========================================================================
 btnGrammar.addEventListener('click', async () => {
   const t = i18n[currentLang];
@@ -947,17 +1217,16 @@ btnCloseGrammar.addEventListener('click', () => {
 });
 
 // ==========================================================================
-// 9. ATAJOS DE TECLADO GLOBALES
+// 10. ATAJOS DE TECLADO GLOBALES
 // ==========================================================================
-window.addEventListener('keydown', (e) => {
-  // Modo Presentación controles de teclado
+window.addEventListener('keydown', async (e) => {
   if (presentationOverlay.style.display === 'flex') {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
-      siguienteDiapositiva();
+      await siguienteDiapositiva();
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      anteriorDiapositiva();
+      await anteriorDiapositiva();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       cerrarPresentacion();
@@ -965,7 +1234,6 @@ window.addEventListener('keydown', (e) => {
     return;
   }
 
-  // Modo Lectura control de escape
   if (readerOverlay.style.display === 'flex') {
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -974,13 +1242,11 @@ window.addEventListener('keydown', (e) => {
     return;
   }
 
-  // F5 -> Iniciar Presentación
   if (e.key === 'F5') {
     e.preventDefault();
     iniciarPresentacion();
   }
 
-  // Atajo Ctrl+P para Exportar a PDF
   if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
     e.preventDefault();
     exportarPDF();
@@ -1014,22 +1280,30 @@ markdownInput.addEventListener('keydown', (e) => {
 });
 
 // ==========================================================================
-// 10. TEMA OSCURO / CLARO
+// 11. TEMA OSCURO / CLARO
 // ==========================================================================
-const temaGuardado = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', temaGuardado);
-btnTheme.textContent = temaGuardado === 'dark' ? '🌙' : '☀️';
+document.documentElement.setAttribute('data-theme', currentTheme);
+btnTheme.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
 
 btnTheme.addEventListener('click', () => {
   const actual = document.documentElement.getAttribute('data-theme');
   const nuevo = actual === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', nuevo);
   localStorage.setItem('theme', nuevo);
+  currentTheme = nuevo;
   btnTheme.textContent = nuevo === 'dark' ? '🌙' : '☀️';
+
+  if (window.mermaid) {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: nuevo === 'dark' ? 'dark' : 'default'
+    });
+    renderizarMarkdown();
+  }
 });
 
 // ==========================================================================
-// 11. TOAST NOTIFICATIONS
+// 12. TOAST NOTIFICATIONS
 // ==========================================================================
 function mostrarToast(mensaje, tipo = 'info') {
   const container = document.getElementById('toast-container');
@@ -1048,7 +1322,7 @@ function mostrarToast(mensaje, tipo = 'info') {
 }
 
 // ==========================================================================
-// 12. EVENTOS DE BOTONES
+// 13. EVENTOS DE BOTONES
 // ==========================================================================
 btnSave.addEventListener('click', guardarNota);
 btnNewNote.addEventListener('click', crearNuevaNota);

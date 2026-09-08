@@ -514,11 +514,107 @@ body {
 
 .markdown-body blockquote {
   border-left: 4px solid var(--accent-primary);
-  padding: 6px 16px;
-  margin: 1em 0;
+  padding: 8px 16px;
+  margin: 1.2em 0;
   color: var(--text-secondary);
   background: var(--accent-light);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* Callouts / Admonitions (GitHub/Obsidian style) */
+.callout {
+  margin: 1.2em 0;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--accent-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.callout-content {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+.callout-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.callout-note {
+  border-left-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+}
+.callout-note .callout-header { color: #38bdf8; }
+
+.callout-tip {
+  border-left-color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+.callout-tip .callout-header { color: #10b981; }
+
+.callout-important {
+  border-left-color: #a855f7;
+  background: rgba(168, 85, 247, 0.08);
+}
+.callout-important .callout-header { color: #a855f7; }
+
+.callout-warning {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+.callout-warning .callout-header { color: #f59e0b; }
+
+.callout-caution {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+.callout-caution .callout-header { color: #ef4444; }
+
+/* Mermaid Diagrams Container */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5em 0;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* KaTeX Math block & inline styling */
+.katex-display {
+  margin: 1.2em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+.katex {
+  font-size: 1.15em;
+}
+
+/* Drag and Drop hover state for textarea */
+.editor-textarea.dragover {
+  border: 2px dashed var(--accent-primary) !important;
+  background: var(--accent-light) !important;
 }
 
 .markdown-body code:not(pre code) {
