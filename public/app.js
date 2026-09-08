@@ -6,6 +6,7 @@ const i18n = {
     appTitle: "Markdown Studio",
     btnSave: "Guardar",
     btnGrammar: "Gramática",
+    btnToc: "Índice",
     btnPresentation: "Presentar",
     btnExportPdf: "PDF",
     btnDownload: "Descargar",
@@ -44,6 +45,15 @@ const i18n = {
     toolMath: "🧮 Fórmula",
     toolCallout: "💡 Alerta",
     noNotesFound: "No se encontraron notas",
+    allNotes: "Ver todas",
+    tagsTitle: "Etiquetas",
+    noTags: "Sin etiquetas",
+    tocTitle: "Tabla de Contenidos",
+    tocEmpty: "No hay encabezados en esta nota",
+    toastPinned: "Nota fijada como favorita ⭐",
+    toastUnpinned: "Nota desfijada",
+    toastWikiLinkCreated: (name) => `Nota "${name}" creada mediante WikiLink 🔗`,
+    pinTitle: "Fijar / Desfijar nota",
     words: (count) => `${count} ${count === 1 ? 'palabra' : 'palabras'}`,
     chars: (count) => `${count} caracteres`,
     lines: (count) => `${count} ${count === 1 ? 'línea' : 'líneas'}`,
@@ -67,50 +77,36 @@ const i18n = {
     toastImageTooLarge: "La imagen es demasiado grande (máximo 5MB)",
     toastReplacementApplied: (oldW, newW) => `Reemplazado "${oldW}" por "${newW}"`,
     previewEmptyPlaceholder: "La vista previa aparecerá aquí conforme vayas escribiendo...",
-    defaultNoteContent: `# Bienvenido a Markdown Studio 🚀
+    defaultNoteContent: `# Bienvenido a Markdown Studio 🚀 #bienvenida #guia
 
-Descubre las nuevas **capacidades de edición avanzada** en tiempo real:
-
----
-
-## 📊 1. Diagramas Interactivos con Mermaid
-
-\`\`\`mermaid
-graph TD
-    A[💡 Idea / Requerimiento] --> B[📝 Escribir Nota en Markdown]
-    B --> C{¿Revisar?}
-    C -->|Sí| D[✨ LanguageTool Gramática]
-    C -->|No| E[📽️ Modo Presentación]
-    D --> E
-    E --> F[📄 Exportar a PDF]
-\`\`\`
+Descubre las **herramientas de organización y edición avanzada**:
 
 ---
 
-## 🧮 2. Fórmulas Matemáticas con KaTeX
-
-Escribe fórmulas en línea como $E = mc^2$ o integrales en bloque:
-
-$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
+## 🏷️ 1. Etiquetas y Organización
+Puedes usar hashtags como #trabajo, #estudio o #ideas en cualquier parte del texto. Aparecerán automáticamente en la barra lateral para filtrar tus notas.
 
 ---
 
-## 💡 3. Alertas y Callouts Destacados
+## 🔗 2. Enlaces WikiLinks (estilo Obsidian)
+Conecta tus notas escribiendo [[Mi Proyecto]] o [[Ideas]]. Al hacer clic en el enlace, abrirá o creará la nota al instante.
 
-> [!NOTE]
-> Puedes pegar imágenes directamente con **Ctrl + V** o arrastrarlas al editor.
+---
 
-> [!TIP]
-> Presiona **F5** para iniciar el modo presentación a pantalla completa.
+## ⭐ 3. Notas Favoritas y Fijadas
+Usa el botón de estrella ⭐ arriba para fijar notas importantes al principio de tu lista.
 
-> [!WARNING]
-> No olvides guardar tus notas importantes con **Ctrl + S**.
+---
+
+## 📑 4. Tabla de Contenidos (TOC)
+Presiona el botón **"Índice"** en la barra superior para ver la estructura de encabezados de tu nota y saltar rápidamente a cualquier sección.
 `
   },
   en: {
     appTitle: "Markdown Studio",
     btnSave: "Save",
     btnGrammar: "Grammar",
+    btnToc: "Outline",
     btnPresentation: "Present",
     btnExportPdf: "PDF",
     btnDownload: "Download",
@@ -149,6 +145,15 @@ $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
     toolMath: "🧮 Math",
     toolCallout: "💡 Callout",
     noNotesFound: "No notes found",
+    allNotes: "View all",
+    tagsTitle: "Tags",
+    noTags: "No tags",
+    tocTitle: "Table of Contents",
+    tocEmpty: "No headings in this note",
+    toastPinned: "Note pinned to top ⭐",
+    toastUnpinned: "Note unpinned",
+    toastWikiLinkCreated: (name) => `Note "${name}" created via WikiLink 🔗`,
+    pinTitle: "Pin / Unpin note",
     words: (count) => `${count} ${count === 1 ? 'word' : 'words'}`,
     chars: (count) => `${count} characters`,
     lines: (count) => `${count} ${count === 1 ? 'line' : 'lines'}`,
@@ -172,44 +177,29 @@ $$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
     toastImageTooLarge: "Image is too large (maximum 5MB)",
     toastReplacementApplied: (oldW, newW) => `Replaced "${oldW}" with "${newW}"`,
     previewEmptyPlaceholder: "Live preview will appear here as you type...",
-    defaultNoteContent: `# Welcome to Markdown Studio 🚀
+    defaultNoteContent: `# Welcome to Markdown Studio 🚀 #welcome #guide
 
-Explore the new **advanced editing capabilities** in real time:
-
----
-
-## 📊 1. Interactive Diagrams with Mermaid
-
-\`\`\`mermaid
-graph TD
-    A[💡 Idea / Requirement] --> B[📝 Write Markdown Note]
-    B --> C{Check?}
-    C -->|Yes| D[✨ LanguageTool Grammar]
-    C -->|No| E[📽️ Presentation Mode]
-    D --> E
-    E --> F[📄 Export to PDF]
-\`\`\`
+Explore our **organization and advanced editing features**:
 
 ---
 
-## 🧮 2. Mathematical Formulas with KaTeX
-
-Write inline math like $E = mc^2$ or block integrals:
-
-$$\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}$$
+## 🏷️ 1. Tags and Organization
+You can use hashtags like #work, #study, or #ideas anywhere in your text. They will automatically appear in the sidebar tag cloud.
 
 ---
 
-## 💡 3. Highlighted Alerts and Callouts
+## 🔗 2. WikiLinks (Obsidian-style)
+Connect your notes by writing [[My Project]] or [[Ideas]]. Clicking the link will open or create that note instantly.
 
-> [!NOTE]
-> You can paste images directly using **Ctrl + V** or drag them into the editor.
+---
 
-> [!TIP]
-> Press **F5** to start full-screen presentation mode.
+## ⭐ 3. Favorite and Pinned Notes
+Use the star icon ⭐ above to pin vital notes to the top of your list.
 
-> [!WARNING]
-> Remember to save your important notes with **Ctrl + S**.
+---
+
+## 📑 4. Table of Contents (TOC)
+Click the **"Outline"** button in the header to view your note structure and smoothly navigate to any section.
 `
   }
 };
@@ -226,11 +216,15 @@ const notesList = document.getElementById('notes-list');
 const searchInput = document.getElementById('search-notes');
 const uploadForm = document.getElementById('upload-form');
 const noteFileInput = document.getElementById('note-file');
+const tagsContainer = document.getElementById('tags-container');
+const btnClearTag = document.getElementById('btn-clear-tag');
+const btnPinActive = document.getElementById('btn-pin-active');
 
 // Botones de acción principales
 const btnSave = document.getElementById('btn-save');
 const btnNewNote = document.getElementById('btn-new-note');
 const btnGrammar = document.getElementById('btn-grammar');
+const btnToc = document.getElementById('btn-toc');
 const btnPresentation = document.getElementById('btn-presentation');
 const btnExportPdf = document.getElementById('btn-export-pdf');
 const btnDownload = document.getElementById('btn-download');
@@ -241,6 +235,9 @@ const btnCloseGrammar = document.getElementById('btn-close-grammar');
 const btnCopyHtml = document.getElementById('btn-copy-html');
 const grammarDrawer = document.getElementById('grammar-drawer');
 const grammarContent = document.getElementById('grammar-content');
+const tocDrawer = document.getElementById('toc-drawer');
+const tocList = document.getElementById('toc-list');
+const btnCloseToc = document.getElementById('btn-close-toc');
 const saveStatus = document.getElementById('save-status');
 
 // Elementos del Modo Presentación
@@ -268,7 +265,12 @@ const statLines = document.getElementById('stat-lines');
 // Estado de la aplicación
 let currentNoteFilename = null;
 let todasLasNotas = [];
+let metadataNotas = [];
 let isUnsaved = false;
+
+// Estado de Organización
+let pinnedNotes = JSON.parse(localStorage.getItem('app_pinned_notes') || '[]');
+let activeTagFilter = null;
 
 // Estado de la presentación
 let slides = [];
@@ -304,14 +306,13 @@ if (window.marked) {
 }
 
 // ==========================================================================
-// PROCESAMIENTO AVANZADO (KATEX, CALLOUTS, MERMAID)
+// PROCESAMIENTO AVANZADO (KATEX, CALLOUTS, WIKILINKS, MERMAID)
 // ==========================================================================
 
 // 1. Renderizar Fórmulas Matemáticas (KaTeX)
 function procesarKaTeX(texto) {
   if (!window.katex) return texto;
 
-  // Renderizar bloques $$...$$
   let resultado = texto.replace(/\$\$([\s\S]*?)\$\$/g, (match, formula) => {
     try {
       return katex.renderToString(formula.trim(), { displayMode: true, throwOnError: false });
@@ -320,7 +321,6 @@ function procesarKaTeX(texto) {
     }
   });
 
-  // Renderizar en línea $...$ (sin saltos de línea)
   resultado = resultado.replace(/\$([^\$\n]+?)\$/g, (match, formula) => {
     try {
       return katex.renderToString(formula.trim(), { displayMode: false, throwOnError: false });
@@ -332,7 +332,16 @@ function procesarKaTeX(texto) {
   return resultado;
 }
 
-// 2. Transformar Alertas / Callouts (GitHub/Obsidian style: [!NOTE], [!TIP], etc.)
+// 2. Transformar WikiLinks [[NombreDeNota]] en enlaces interactivos
+function procesarWikiLinks(texto) {
+  return texto.replace(/\[\[([a-zA-Z0-9_\u00C0-\u017F\s\.\-]+)\]\]/g, (match, noteTarget) => {
+    const cleanTarget = noteTarget.trim();
+    const filename = cleanTarget.endsWith('.md') ? cleanTarget : cleanTarget + '.md';
+    return `<a href="#" class="wikilink" data-target="${filename}" title="Abrir nota: ${cleanTarget}">[[${cleanTarget}]]</a>`;
+  });
+}
+
+// 3. Transformar Alertas / Callouts
 function procesarCallouts(html) {
   const iconMap = {
     NOTE: 'ℹ️',
@@ -361,15 +370,14 @@ function procesarCallouts(html) {
   });
 }
 
-// 3. Renderizar Diagramas Mermaid en el contenedor dado
+// 4. Renderizar Diagramas Mermaid
 async function renderizarDiagramasMermaid(container) {
   if (!window.mermaid) return;
 
   const nodos = container.querySelectorAll('.mermaid, pre code.language-mermaid');
   if (nodos.length === 0) return;
 
-  // Convertir pre code en div.mermaid si fuera necesario
-  nodos.forEach((nodo, idx) => {
+  nodos.forEach((nodo) => {
     if (nodo.tagName.toLowerCase() === 'code') {
       const parentPre = nodo.parentElement;
       const div = document.createElement('div');
@@ -388,7 +396,7 @@ async function renderizarDiagramasMermaid(container) {
   }
 }
 
-// 4. Sanitización segura con DOMPurify permitiendo SVG (Mermaid) y MathML (KaTeX)
+// 5. Sanitización segura con DOMPurify
 function sanitizarHTML(html) {
   if (!window.DOMPurify) return html;
 
@@ -396,15 +404,189 @@ function sanitizarHTML(html) {
     ADD_TAGS: [
       'svg', 'path', 'g', 'rect', 'circle', 'text', 'line', 'polygon', 'polyline', 'marker', 'defs', 'style', 'foreignObject',
       'math', 'semantics', 'mrow', 'mi', 'mo', 'mn', 'msup', 'msub', 'mfrac', 'msqrt', 'mroot', 'mtable', 'mtr', 'mtd', 'annotation',
-      'span', 'div', 'mark', 'code', 'pre'
+      'span', 'div', 'mark', 'code', 'pre', 'a'
     ],
     ADD_ATTR: [
       'd', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-dasharray', 'transform', 'class', 'id', 'xmlns',
       'cx', 'cy', 'r', 'rx', 'ry', 'x', 'y', 'x1', 'y1', 'x2', 'y2', 'width', 'height', 'marker-end', 'marker-start',
-      'style', 'aria-hidden', 'role', 'title', 'data-action'
+      'style', 'aria-hidden', 'role', 'title', 'data-action', 'data-target', 'href'
     ]
   });
 }
+
+// ==========================================================================
+// 6. GESTIÓN DE ORGANIZACIÓN (TAGS, PINNED, WIKILINKS, TOC)
+// ==========================================================================
+
+// Extraer etiquetas #tag del texto
+function extraerEtiquetas(texto) {
+  const regex = /(?:^|\s)#([a-zA-Z0-9_\u00C0-\u017F-]+)/g;
+  const tags = new Set();
+  let match;
+  while ((match = regex.exec(texto)) !== null) {
+    tags.add(match[1].toLowerCase());
+  }
+  return Array.from(tags);
+}
+
+// Actualizar nube de etiquetas en la barra lateral
+function actualizarNubeDeEtiquetas() {
+  if (!tagsContainer) return;
+  tagsContainer.innerHTML = '';
+
+  const tagCounts = {};
+  metadataNotas.forEach(item => {
+    (item.tags || []).forEach(tag => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+
+  const tagsDisponibles = Object.keys(tagCounts).sort();
+
+  if (tagsDisponibles.length === 0) {
+    tagsContainer.innerHTML = `<span style="font-size: 0.75rem; color: var(--text-muted); font-style: italic;">${i18n[currentLang].noTags}</span>`;
+    btnClearTag.style.display = 'none';
+    return;
+  }
+
+  if (activeTagFilter) {
+    btnClearTag.style.display = 'inline-block';
+  } else {
+    btnClearTag.style.display = 'none';
+  }
+
+  tagsDisponibles.forEach(tag => {
+    const chip = document.createElement('span');
+    chip.className = `tag-chip ${activeTagFilter === tag ? 'active' : ''}`;
+    chip.innerHTML = `#${tag} <span class="tag-count">(${tagCounts[tag]})</span>`;
+    
+    chip.onclick = () => {
+      if (activeTagFilter === tag) {
+        activeTagFilter = null;
+      } else {
+        activeTagFilter = tag;
+      }
+      actualizarNubeDeEtiquetas();
+      renderizarListaNotas();
+    };
+
+    tagsContainer.appendChild(chip);
+  });
+}
+
+btnClearTag.addEventListener('click', () => {
+  activeTagFilter = null;
+  actualizarNubeDeEtiquetas();
+  renderizarListaNotas();
+});
+
+// Fijar / Desfijar Nota ⭐
+function togglePinNota(filename) {
+  const t = i18n[currentLang];
+  if (pinnedNotes.includes(filename)) {
+    pinnedNotes = pinnedNotes.filter(f => f !== filename);
+    mostrarToast(t.toastUnpinned, 'info');
+  } else {
+    pinnedNotes.push(filename);
+    mostrarToast(t.toastPinned, 'success');
+  }
+  localStorage.setItem('app_pinned_notes', JSON.stringify(pinnedNotes));
+  actualizarBotonPinActivo();
+  renderizarListaNotas();
+}
+
+function actualizarBotonPinActivo() {
+  if (!btnPinActive) return;
+  if (currentNoteFilename && pinnedNotes.includes(currentNoteFilename)) {
+    btnPinActive.textContent = '★';
+    btnPinActive.classList.add('active');
+  } else {
+    btnPinActive.textContent = '☆';
+    btnPinActive.classList.remove('active');
+  }
+}
+
+btnPinActive.addEventListener('click', () => {
+  if (currentNoteFilename) {
+    togglePinNota(currentNoteFilename);
+  }
+});
+
+// Navegación por WikiLinks [[Note]]
+async function navegarAWikiLink(targetFilename) {
+  const cleanTarget = targetFilename.replace(/\.md$/i, '');
+  
+  if (todasLasNotas.includes(targetFilename)) {
+    abrirNota(targetFilename);
+  } else {
+    // Si la nota no existe, crearla y abrirla
+    currentNoteFilename = targetFilename;
+    noteTitle.value = cleanTarget;
+    markdownInput.value = `# ${cleanTarget}\n\nNota creada automáticamente mediante [[WikiLink]].`;
+    await guardarNota();
+    mostrarToast(i18n[currentLang].toastWikiLinkCreated(cleanTarget), 'success');
+  }
+}
+
+// Delegación global para clics en WikiLinks
+document.addEventListener('click', (e) => {
+  const wikilink = e.target.closest('.wikilink');
+  if (wikilink) {
+    e.preventDefault();
+    const target = wikilink.dataset.target;
+    if (target) navegarAWikiLink(target);
+  }
+});
+
+// Tabla de Contenidos (TOC / Outline)
+function actualizarTablaDeContenidos() {
+  if (!tocList) return;
+  const texto = markdownInput.value;
+  const regex = /^(#{1,3})\s+(.+)$/gm;
+  tocList.innerHTML = '';
+
+  let match;
+  let count = 0;
+
+  while ((match = regex.exec(texto)) !== null) {
+    count++;
+    const level = match[1].length; // 1, 2, or 3
+    const title = match[2].replace(/#.*$/, '').trim(); // Quitar hashtags del final si los hay
+
+    const li = document.createElement('li');
+    li.className = `toc-item toc-level-${level}`;
+    li.textContent = title;
+    
+    li.onclick = () => scrollAEncabezado(title);
+    tocList.appendChild(li);
+  }
+
+  if (count === 0) {
+    tocList.innerHTML = `<li style="color: var(--text-muted); font-size: 0.85rem; padding: 12px; font-style: italic;">${i18n[currentLang].tocEmpty}</li>`;
+  }
+}
+
+function scrollAEncabezado(titulo) {
+  const headings = previewOutput.querySelectorAll('h1, h2, h3');
+  for (let h of headings) {
+    if (h.textContent.includes(titulo)) {
+      h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      h.style.color = 'var(--accent-primary)';
+      setTimeout(() => h.style.color = '', 1500);
+      break;
+    }
+  }
+}
+
+btnToc.addEventListener('click', () => {
+  actualizarTablaDeContenidos();
+  tocDrawer.classList.toggle('open');
+  grammarDrawer.classList.remove('open');
+});
+
+btnCloseToc.addEventListener('click', () => {
+  tocDrawer.classList.remove('open');
+});
 
 // ==========================================================================
 // GESTIÓN DE IDIOMA (i18n)
@@ -437,8 +619,10 @@ function setLanguage(lang) {
     saveStatus.textContent = t.savedStatus;
   }
 
+  actualizarNubeDeEtiquetas();
+  actualizarTablaDeContenidos();
   renderizarMarkdown();
-  renderizarListaNotas(todasLasNotas);
+  renderizarListaNotas();
 }
 
 if (langSelect) {
@@ -449,7 +633,7 @@ if (langSelect) {
 }
 
 // ==========================================================================
-// 1. RENDERIZADO EN TIEMPO REAL
+// 7. RENDERIZADO EN TIEMPO REAL
 // ==========================================================================
 async function renderizarMarkdown() {
   const t = i18n[currentLang];
@@ -460,23 +644,27 @@ async function renderizarMarkdown() {
   } else {
     // 1. Procesar fórmulas matemáticas KaTeX
     const textoConMath = procesarKaTeX(textoOriginal);
+
+    // 2. Procesar enlaces WikiLinks [[...]]
+    const textoConWikiLinks = procesarWikiLinks(textoConMath);
     
-    // 2. Parsear Markdown a HTML con Marked
-    const htmlCrudo = marked.parse(textoConMath);
+    // 3. Parsear Markdown a HTML con Marked
+    const htmlCrudo = marked.parse(textoConWikiLinks);
     
-    // 3. Transformar Callouts / Alertas
+    // 4. Transformar Callouts / Alertas
     const htmlConCallouts = procesarCallouts(htmlCrudo);
     
-    // 4. Sanitizar HTML
+    // 5. Sanitizar HTML
     const htmlLimpio = sanitizarHTML(htmlConCallouts);
     
     previewOutput.innerHTML = htmlLimpio;
 
-    // 5. Renderizar Diagramas Mermaid asíncronamente
+    // 6. Renderizar Diagramas Mermaid asíncronamente
     await renderizarDiagramasMermaid(previewOutput);
   }
 
   actualizarEstadisticas(textoOriginal);
+  actualizarTablaDeContenidos();
 }
 
 markdownInput.addEventListener('input', () => {
@@ -507,7 +695,7 @@ previewOutput.addEventListener('scroll', () => {
 });
 
 // ==========================================================================
-// 2. PEGAR Y ARRASTRAR IMÁGENES (CLIPBOARD & DRAG-AND-DROP)
+// 8. PEGAR Y ARRASTRAR IMÁGENES
 // ==========================================================================
 function insertarTextoEnCursor(textoInsertar) {
   const start = markdownInput.selectionStart;
@@ -539,7 +727,6 @@ function procesarArchivoImagen(file, origen = 'paste') {
   reader.readAsDataURL(file);
 }
 
-// Pegar imagen con Ctrl+V
 markdownInput.addEventListener('paste', (e) => {
   const items = (e.clipboardData || e.originalEvent.clipboardData).items;
   for (let item of items) {
@@ -552,7 +739,6 @@ markdownInput.addEventListener('paste', (e) => {
   }
 });
 
-// Arrastrar y soltar imagen en el editor
 markdownInput.addEventListener('dragover', (e) => {
   e.preventDefault();
   markdownInput.classList.add('dragover');
@@ -575,7 +761,7 @@ markdownInput.addEventListener('drop', (e) => {
 });
 
 // ==========================================================================
-// 3. ESTADÍSTICAS DEL DOCUMENTO
+// 9. ESTADÍSTICAS DEL DOCUMENTO
 // ==========================================================================
 function actualizarEstadisticas(texto) {
   const t = i18n[currentLang];
@@ -603,7 +789,7 @@ function marcarGuardado() {
 }
 
 // ==========================================================================
-// 4. BARRA DE HERRAMIENTAS MARKDOWN
+// 10. BARRA DE HERRAMIENTAS MARKDOWN
 // ==========================================================================
 document.querySelectorAll('.tool-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -689,46 +875,91 @@ function insertarFormato(action) {
 }
 
 // ==========================================================================
-// 5. GESTIÓN DE NOTAS (CRUD)
+// 11. GESTIÓN DE NOTAS (CRUD + SORTING PINNED + TAG FILTER)
 // ==========================================================================
 async function cargarNotas() {
   try {
-    const res = await fetch('/notes');
-    if (!res.ok) throw new Error('Error fetching notes');
-    
-    todasLasNotas = await res.json();
-    renderizarListaNotas(todasLasNotas);
+    const resMeta = await fetch('/notes/metadata');
+    if (resMeta.ok) {
+      metadataNotas = await resMeta.json();
+      todasLasNotas = metadataNotas.map(m => m.filename);
+    } else {
+      const res = await fetch('/notes');
+      todasLasNotas = await res.json();
+      metadataNotas = todasLasNotas.map(f => ({ filename: f, tags: [] }));
+    }
+
+    actualizarNubeDeEtiquetas();
+    renderizarListaNotas();
 
     if (todasLasNotas.length > 0 && !currentNoteFilename) {
-      abrirNota(todasLasNotas[0]);
+      // Abrir la primera nota (fijada o normal)
+      const notasOrdenadas = obtenerNotasOrdenadas(todasLasNotas);
+      abrirNota(notasOrdenadas[0]);
     } else if (todasLasNotas.length === 0 && !currentNoteFilename) {
       crearNuevaNota();
     }
   } catch (err) {
-    console.error(err);
+    console.error('Error cargando notas:', err);
   }
 }
 
-function renderizarListaNotas(notas) {
+function obtenerNotasOrdenadas(lista) {
+  return [...lista].sort((a, b) => {
+    const aPin = pinnedNotes.includes(a);
+    const bPin = pinnedNotes.includes(b);
+    if (aPin && !bPin) return -1;
+    if (!aPin && bPin) return 1;
+    return a.localeCompare(b, undefined, { sensitivity: 'base' });
+  });
+}
+
+function renderizarListaNotas() {
   const t = i18n[currentLang];
   notesList.innerHTML = '';
 
-  if (notas.length === 0) {
+  const query = searchInput.value.toLowerCase().trim();
+  
+  let notasFiltradas = todasLasNotas.filter(nota => {
+    const coincideNombre = nota.toLowerCase().includes(query);
+    if (!coincideNombre) return false;
+
+    if (activeTagFilter) {
+      const meta = metadataNotas.find(m => m.filename === nota);
+      return meta && (meta.tags || []).includes(activeTagFilter);
+    }
+    return true;
+  });
+
+  const notasOrdenadas = obtenerNotasOrdenadas(notasFiltradas);
+
+  if (notasOrdenadas.length === 0) {
     notesList.innerHTML = `<li style="padding: 12px; color: var(--text-muted); font-size: 0.85rem; text-align: center;">${t.noNotesFound}</li>`;
     return;
   }
 
-  notas.forEach(nota => {
+  notasOrdenadas.forEach(nota => {
+    const esPinned = pinnedNotes.includes(nota);
     const li = document.createElement('li');
-    li.className = `note-item ${currentNoteFilename === nota ? 'active' : ''}`;
+    li.className = `note-item ${currentNoteFilename === nota ? 'active' : ''} ${esPinned ? 'pinned' : ''}`;
     
     const titleSpan = document.createElement('span');
     titleSpan.className = 'note-item-title';
-    titleSpan.innerHTML = `<span>📝</span> ${nota.replace(/\.md$/i, '')}`;
+    const starIcon = esPinned ? `<span class="note-item-star">⭐</span>` : `<span>📝</span>`;
+    titleSpan.innerHTML = `${starIcon} ${nota.replace(/\.md$/i, '')}`;
 
     const actionsDiv = document.createElement('div');
     actionsDiv.className = 'note-item-actions';
     
+    const pinBtn = document.createElement('button');
+    pinBtn.className = `item-btn pin-btn ${esPinned ? 'active' : ''}`;
+    pinBtn.title = t.pinTitle;
+    pinBtn.innerHTML = esPinned ? '★' : '☆';
+    pinBtn.onclick = (e) => {
+      e.stopPropagation();
+      togglePinNota(nota);
+    };
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'item-btn';
     deleteBtn.title = 'Delete note';
@@ -738,6 +969,7 @@ function renderizarListaNotas(notas) {
       confirmarYEliminarNota(nota);
     };
 
+    actionsDiv.appendChild(pinBtn);
     actionsDiv.appendChild(deleteBtn);
     li.appendChild(titleSpan);
     li.appendChild(actionsDiv);
@@ -764,11 +996,13 @@ async function abrirNota(nombreArchivo) {
     markdownInput.value = contenidoRaw;
     
     btnDelete.style.display = 'inline-flex';
+    actualizarBotonPinActivo();
     renderizarMarkdown();
     marcarGuardado();
-    renderizarListaNotas(todasLasNotas);
+    renderizarListaNotas();
 
     grammarDrawer.classList.remove('open');
+    tocDrawer.classList.remove('open');
   } catch (err) {
     console.error(err);
   }
@@ -802,13 +1036,17 @@ async function guardarNota() {
     const data = await res.json();
     currentNoteFilename = data.filename;
     btnDelete.style.display = 'inline-flex';
+    actualizarBotonPinActivo();
     marcarGuardado();
     mostrarToast(t.toastSaveSuccess, 'success');
 
-    const listRes = await fetch('/notes');
-    if (listRes.ok) {
-      todasLasNotas = await listRes.json();
-      renderizarListaNotas(todasLasNotas);
+    // Refrescar metadatos y etiquetas
+    const metaRes = await fetch('/notes/metadata');
+    if (metaRes.ok) {
+      metadataNotas = await metaRes.json();
+      todasLasNotas = metadataNotas.map(m => m.filename);
+      actualizarNubeDeEtiquetas();
+      renderizarListaNotas();
     }
   } catch (err) {
     console.error(err);
@@ -823,9 +1061,10 @@ function crearNuevaNota() {
   noteTitle.value = t.untitledNote;
   markdownInput.value = t.defaultNoteContent;
   btnDelete.style.display = 'none';
+  actualizarBotonPinActivo();
   renderizarMarkdown();
   marcarModificado();
-  renderizarListaNotas(todasLasNotas);
+  renderizarListaNotas();
   markdownInput.focus();
 }
 
@@ -841,6 +1080,10 @@ async function confirmarYEliminarNota(nombreArchivo) {
     });
 
     if (!res.ok) throw new Error('Error deleting note');
+
+    // Si estaba fijada, remover
+    pinnedNotes = pinnedNotes.filter(f => f !== nombreArchivo);
+    localStorage.setItem('app_pinned_notes', JSON.stringify(pinnedNotes));
 
     mostrarToast(t.toastDeleteSuccess, 'success');
 
@@ -906,26 +1149,20 @@ noteFileInput.addEventListener('change', async () => {
     mostrarToast(t.toastUploadSuccess, 'success');
     noteFileInput.value = '';
     
-    const listRes = await fetch('/notes');
-    if (listRes.ok) {
-      todasLasNotas = await listRes.json();
-      renderizarListaNotas(todasLasNotas);
-      abrirNota(archivo.name);
-    }
+    await cargarNotas();
+    abrirNota(archivo.name);
   } catch (err) {
     console.error(err);
     mostrarToast(t.toastUploadError, 'error');
   }
 });
 
-searchInput.addEventListener('input', (e) => {
-  const query = e.target.value.toLowerCase().trim();
-  const filtradas = todasLasNotas.filter(nota => nota.toLowerCase().includes(query));
-  renderizarListaNotas(filtradas);
+searchInput.addEventListener('input', () => {
+  renderizarListaNotas();
 });
 
 // ==========================================================================
-// 6. EXPORTACIÓN A PDF PROFESIONAL
+// 12. EXPORTACIÓN A PDF PROFESIONAL
 // ==========================================================================
 async function exportarPDF() {
   const t = i18n[currentLang];
@@ -954,16 +1191,15 @@ async function exportarPDF() {
   h1Titulo.style.color = '#1e293b';
   contenedorTemp.appendChild(h1Titulo);
 
-  // Procesar math, markdown y callouts
   const textoMath = procesarKaTeX(textoOriginal);
-  const htmlRaw = marked.parse(textoMath);
+  const textoWiki = procesarWikiLinks(textoMath);
+  const htmlRaw = marked.parse(textoWiki);
   const htmlCallouts = procesarCallouts(htmlRaw);
   
   const divContenido = document.createElement('div');
   divContenido.innerHTML = sanitizarHTML(htmlCallouts);
   contenedorTemp.appendChild(divContenido);
 
-  // Renderizar Mermaid dentro del contenedor temporal
   document.body.appendChild(contenedorTemp);
   await renderizarDiagramasMermaid(contenedorTemp);
 
@@ -993,7 +1229,7 @@ async function exportarPDF() {
 btnExportPdf.addEventListener('click', exportarPDF);
 
 // ==========================================================================
-// 7. MODO PRESENTACIÓN (SLIDESHOW CON MERMAID Y KATEX)
+// 13. MODO PRESENTACIÓN
 // ==========================================================================
 async function iniciarPresentacion() {
   const texto = markdownInput.value.trim();
@@ -1022,7 +1258,8 @@ async function renderizarDiapositivaActual() {
 
   const rawSlide = slides[currentSlideIndex];
   const mathSlide = procesarKaTeX(rawSlide);
-  const htmlRaw = marked.parse(mathSlide);
+  const wikiSlide = procesarWikiLinks(mathSlide);
+  const htmlRaw = marked.parse(wikiSlide);
   const htmlCallouts = procesarCallouts(htmlRaw);
   const htmlLimpio = sanitizarHTML(htmlCallouts);
 
@@ -1062,14 +1299,15 @@ btnPrevSlide.addEventListener('click', anteriorDiapositiva);
 btnExitPresentation.addEventListener('click', cerrarPresentacion);
 
 // ==========================================================================
-// 8. MODO LECTURA LIMPIA (READER VIEW)
+// 14. MODO LECTURA LIMPIA
 // ==========================================================================
 async function iniciarModoLectura() {
   const textoOriginal = markdownInput.value.trim();
   readerNoteTitle.textContent = noteTitle.value.trim() || 'Nota';
   
   const mathText = procesarKaTeX(textoOriginal);
-  const htmlRaw = marked.parse(mathText);
+  const wikiText = procesarWikiLinks(mathText);
+  const htmlRaw = marked.parse(wikiText);
   const htmlCallouts = procesarCallouts(htmlRaw);
   readerContent.innerHTML = sanitizarHTML(htmlCallouts);
   
@@ -1086,7 +1324,7 @@ btnCloseReader.addEventListener('click', cerrarModoLectura);
 btnReaderPrint.addEventListener('click', () => window.print());
 
 // ==========================================================================
-// 9. ASISTENTE DE GRAMÁTICA (LanguageTool)
+// 15. ASISTENTE DE GRAMÁTICA (LanguageTool)
 // ==========================================================================
 btnGrammar.addEventListener('click', async () => {
   const t = i18n[currentLang];
@@ -1098,6 +1336,7 @@ btnGrammar.addEventListener('click', async () => {
   }
 
   grammarDrawer.classList.add('open');
+  tocDrawer.classList.remove('open');
   grammarContent.innerHTML = `
     <div style="text-align: center; padding: 24px;">
       <p>${t.grammarAnalyzing}</p>
@@ -1217,7 +1456,7 @@ btnCloseGrammar.addEventListener('click', () => {
 });
 
 // ==========================================================================
-// 10. ATAJOS DE TECLADO GLOBALES
+// 16. ATAJOS DE TECLADO GLOBALES
 // ==========================================================================
 window.addEventListener('keydown', async (e) => {
   if (presentationOverlay.style.display === 'flex') {
@@ -1226,7 +1465,7 @@ window.addEventListener('keydown', async (e) => {
       await siguienteDiapositiva();
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      await anteriorDiapositiva();
+      anteriorDiapositiva();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       cerrarPresentacion();
@@ -1239,6 +1478,11 @@ window.addEventListener('keydown', async (e) => {
       e.preventDefault();
       cerrarModoLectura();
     }
+    return;
+  }
+
+  if (tocDrawer.classList.contains('open') && e.key === 'Escape') {
+    tocDrawer.classList.remove('open');
     return;
   }
 
@@ -1280,7 +1524,7 @@ markdownInput.addEventListener('keydown', (e) => {
 });
 
 // ==========================================================================
-// 11. TEMA OSCURO / CLARO
+// 17. TEMA OSCURO / CLARO
 // ==========================================================================
 document.documentElement.setAttribute('data-theme', currentTheme);
 btnTheme.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
@@ -1303,7 +1547,7 @@ btnTheme.addEventListener('click', () => {
 });
 
 // ==========================================================================
-// 12. TOAST NOTIFICATIONS
+// 18. TOAST NOTIFICATIONS
 // ==========================================================================
 function mostrarToast(mensaje, tipo = 'info') {
   const container = document.getElementById('toast-container');
@@ -1322,7 +1566,7 @@ function mostrarToast(mensaje, tipo = 'info') {
 }
 
 // ==========================================================================
-// 13. EVENTOS DE BOTONES
+// 19. EVENTOS DE BOTONES SUPERIORES
 // ==========================================================================
 btnSave.addEventListener('click', guardarNota);
 btnNewNote.addEventListener('click', crearNuevaNota);

@@ -53,6 +53,9 @@
       <button id="btn-grammar" class="btn btn-grammar" title="Revisar ortografía y gramática">
         <span>✨</span> <span data-i18n="btnGrammar">Gramática</span>
       </button>
+      <button id="btn-toc" class="btn btn-secondary" title="Tabla de Contenidos (TOC)">
+        <span>📑</span> <span data-i18n="btnToc">Índice</span>
+      </button>
       <button id="btn-presentation" class="btn btn-secondary" title="Modo Presentación (F5)">
         <span>📽️</span> <span data-i18n="btnPresentation">Presentar</span>
       </button>
@@ -97,6 +100,17 @@
         </form>
       </div>
 
+      <!-- Sección de Filtro por Etiquetas (#tags) -->
+      <div class="tags-section">
+        <div class="tags-header">
+          <span class="tags-title">🏷️ <span data-i18n="tagsTitle">Etiquetas</span></span>
+          <button id="btn-clear-tag" class="clear-tag-btn" style="display: none;" data-i18n="allNotes">Ver todas</button>
+        </div>
+        <div id="tags-container" class="tags-container">
+          <!-- Chips de etiquetas generados dinámicamente -->
+        </div>
+      </div>
+
       <ul id="notes-list" class="notes-list">
         <!-- Generado dinámicamente con JavaScript -->
       </ul>
@@ -107,6 +121,7 @@
       
       <!-- Barra de título de la nota -->
       <div class="note-meta-bar">
+        <button id="btn-pin-active" class="btn icon-btn pin-btn" title="Fijar nota / Pin note">☆</button>
         <input type="text" id="note-title" class="title-input" placeholder="Título de la nota (ej: Mi primera nota)..." data-i18n-placeholder="titlePlaceholder" value="Nota sin título">
       </div>
 
@@ -184,6 +199,21 @@
       </div>
       <div id="grammar-content" class="drawer-content">
         <p style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="grammarEmptyState">Presiona "Gramática" para analizar la nota con LanguageTool.</p>
+      </div>
+    </div>
+
+    <!-- Panel Lateral Deslizante (Drawer) para Tabla de Contenidos (TOC / Outline) -->
+    <div id="toc-drawer" class="toc-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span>📑</span> <span data-i18n="tocTitle">Tabla de Contenidos</span>
+        </div>
+        <button id="btn-close-toc" class="icon-btn" style="width: 28px; height: 28px;">✕</button>
+      </div>
+      <div class="drawer-content">
+        <ul id="toc-list" class="toc-list">
+          <!-- Elementos de encabezados H1, H2, H3 generados en tiempo real -->
+        </ul>
       </div>
     </div>
 

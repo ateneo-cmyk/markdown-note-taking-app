@@ -79,6 +79,37 @@ app.get('/notes', (req, res) => {
     }
 });
 
+// Obtener metadatos y etiquetas (#tags) de todas las notas
+app.get('/notes/metadata', (req, res) => {
+    try {
+        const archivos = fs.readdirSync(uploadsDir);
+        const notas = archivos.filter(archivo => !archivo.startsWith('.'));
+        const tagRegex = /(?:^|\s)#([a-zA-Z0-9_\u00C0-\u017F-]+)/g;
+
+        const resultado = notas.map(nombre => {
+            const rutaArchivo = path.join(uploadsDir, nombre);
+            try {
+                const contenido = fs.readFileSync(rutaArchivo, 'utf-8');
+                const tags = new Set();
+                let match;
+                while ((match = tagRegex.exec(contenido)) !== null) {
+                    tags.add(match[1].toLowerCase());
+                }
+                return {
+                    filename: nombre,
+                    tags: Array.from(tags)
+                };
+            } catch (e) {
+                return { filename: nombre, tags: [] };
+            }
+        });
+
+        res.json(resultado);
+    } catch (error) {
+        res.status(500).send('Error al obtener metadatos: ' + error.message);
+    }
+});
+
 // Obtener contenido crudo (Markdown original) de una nota para el editor
 app.get('/notes/:nombre/raw', (req, res) => {
     const nombreSeguro = path.basename(req.params.nombre);
