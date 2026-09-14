@@ -1,131 +1,175 @@
-# ⚡ Markdown Studio - Note-Taking App
+# ⚡ Markdown Studio — Personal Knowledge & Note-Taking Suite
 
-> A modern, fast, and elegant web application to create, edit, and manage **Markdown** notes in real-time, featuring an integrated AI/LanguageTool grammar & spell checker, syntax highlighting, and a customizable sleek UI with Dark & Light modes.
+> A modern, ultra-fast, and elegant web application to create, organize, and visualize Markdown notes in real-time. Features an **Interactive 2D Knowledge Graph**, bidirectional **`[[WikiLinks]]`**, **`#tags`** cloud, **Mermaid.js** diagrams, **KaTeX** math formulas, **LanguageTool** grammar checker, **F5 Presentation Mode**, and full **Dark/Light** theming with bilingual internationalization (**ES / EN**).
 
 ![Node.js](https://img.shields.io/badge/Node.js-v18+-68a063?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-5.x-black?style=for-the-badge&logo=express&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![CSS3](https://img.shields.io/badge/CSS3-Modern_Flex/Grid-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-Modern_Design_Tokens-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Force-Graph](https://img.shields.io/badge/Force--Graph-2D_Physics_60fps-6366f1?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-ISC-blue?style=for-the-badge)
 
 ---
 
-## 📸 Key Features
+## ✨ Features Overview
 
-* ⚡ **Real-Time Live Markdown Preview:** Instantaneous client-side HTML rendering (0 latency, 60fps) in a split-screen layout without server overhead.
-* 🎨 **Syntax Highlighting:** Full syntax highlighting for code blocks across popular languages (JavaScript, Python, HTML, CSS, SQL, JSON, etc.) via [highlight.js](https://highlightjs.org/).
-* 🛠️ **Markdown Quick Toolbar:** One-click shortcuts for Headings (H1, H2, H3), Bold, Italic, Strikethrough, Blockquotes, Inline Code, Code Blocks, Links, Lists, Task Lists (`[ ]`), and Tables.
-* ✨ **Grammar & Spell Checker:** Integrated with the [LanguageTool API](https://languagetool.org/) with an interactive side drawer and **1-click suggestion replacement** directly into your editor.
-* 📁 **Complete Note Management (CRUD):**
-  * Create new notes on the fly.
-  * Auto-save & edit existing `.md` files.
-  * Upload existing `.md` files from your device with original filename preservation.
-  * Delete notes with confirmation prompts.
-  * Download notes as `.md` files or copy rendered HTML with one click.
-* 🔍 **Real-Time Note Search:** Instant search filter in the sidebar to find notes quickly.
-* 📜 **Synchronized Scrolling:** Proportional dual-pane sync scrolling between the markdown editor and HTML preview.
-* ⌨️ **Keyboard Shortcuts:**
-  * <kbd>Ctrl</kbd> + <kbd>S</kbd> / <kbd>Cmd</kbd> + <kbd>S</kbd> : Save note immediately.
-  * <kbd>Ctrl</kbd> + <kbd>B</kbd> : Toggle bold formatting on selection.
-  * <kbd>Ctrl</kbd> + <kbd>I</kbd> : Toggle italic formatting on selection.
-  * <kbd>Tab</kbd> : Insert 2-space indentation without losing focus.
-* 🌓 **Dark & Light Mode:** Sleek glassmorphic theme with persistent preference saved to `localStorage`.
-* 🛡️ **Built-in Security:**
-  * XSS prevention using [DOMPurify](https://github.com/cure53/DOMPurify) for safe markdown HTML rendering.
-  * Path traversal protection on all file-system operations in the backend.
-* 📊 **Live Document Statistics:** Real-time counters for words, characters, and lines.
+### 🕸️ 1. Interactive 2D Knowledge Graph (PKM)
+* **Hardware-Accelerated Physics Simulation (60 FPS):** Powered by `force-graph` and `d3-force` on HTML5 Canvas.
+* **Smart Node Hierarchy:** Node sizes automatically scale with connection density (degree centrality).
+* **State-Aware Aesthetics:**
+  * 🟢 **Active Note:** Emerald glowing ring.
+  * 🟡 **Pinned / Favorite Notes ⭐:** Warm amber nodes.
+  * 🟣 **Standard Notes:** Indigo nodes.
+  * ⚪ **Uncreated WikiLinks (Ghost Nodes):** Dashed slate border (click to instantiate).
+* **Hover Focus & Particle Waves:** Highlights adjacent notes and animates directional particle flow across edges.
+* **Live Search & Filter:** Filter nodes in real-time with instant matching for titles and `#tags`.
+* **Instant Navigation:** Click any node to instantly open the note in the editor.
+
+### 🔗 2. Organization & Knowledge Linking
+* **📅 Daily Notes (Notas Diarias de 1-Clic):** Instantly create or access today's note (`YYYY-MM-DD.md`) prefilled with priority checklists and notes.
+* **📋 Rich Templates System:** 5 customizable templates (Daily Log, Meeting Notes, Project Plan with Mermaid, Cornell Study with KaTeX, Bug Report) with dynamic variable interpolation (`{{date}}`, `{{time}}`, `{{title}}`).
+* **⏱️ Intelligent Autosave:** 1.5s debounce background persistence directly to local disk with an on/off toggle switch.
+* **Bidirectional `[[WikiLinks]]`:** Connect notes by typing `[[Note Name]]`. Click to jump or auto-create the target note.
+* **Dynamic `#Hashtag` Cloud:** Automatically extracts `#tags` from text, organizing notes into interactive filter chips in the sidebar.
+* **⭐ Pinned / Favorite Notes:** Pin vital notes to always remain at the top of your list (saved in `localStorage`).
+* **📑 Live Table of Contents (TOC / Outline):** Slide-out drawer indexing H1, H2, and H3 headings with smooth scrolling to sections.
+
+### 🎨 3. Advanced Editing & Visual Media
+* **📊 Mermaid.js Diagrams:** Full native support for Flowcharts, Sequence Diagrams, State Diagrams, and Gantt charts inside ` ```mermaid ` blocks.
+* **🧮 KaTeX LaTeX Math Formulas:** Render inline (`$...$`) and display block (`$$...$$`) mathematical equations instantly.
+* **💡 GitHub-Style Callouts:** Beautiful alert banners (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
+* **📋 Clipboard & Drag-and-Drop Images:** Paste directly from your clipboard (<kbd>Ctrl</kbd>+<kbd>V</kbd>) or drag image files onto the editor for automatic base64 insertion.
+* **🛠️ One-Click Markdown Toolbar:** Instant shortcuts for Headings, Bold, Italic, Strikethrough, Quotes, Inline Code, Code Blocks, Tables, Task Lists (`[ ]`), Diagrams, Math, and Alerts.
+
+### ⚡ 4. Productivity & Power Features (v2.1)
+* **🔍 Universal Command Palette (<kbd>Ctrl</kbd> + <kbd>K</kbd>):** Instant floating command bar (Spotlight/Raycast style) to search notes, execute actions, toggle themes, and jump anywhere with zero mouse clicks.
+* **🔎 Global Full-Text Search:** Deep search scanning the actual body text of all markdown notes in disk, returning contextual snippets highlighted with `<mark>`.
+* **🕒 Automatic Version History & Snapshots:** Background versioning on every note save (up to 20 revisions). Compare timestamps, preview historical contents, and restore previous versions in 1 click.
+* **📁 Hierarchical Folder System:** Create nested directories (`📁 Proyectos`, `Personal`, `Trabajo`), organize notes neatly in the sidebar, and filter notes with category chips.
+
+### 🧘 5. Focus & Security Suite (v2.2)
+* **🧘 Immersive Zen Focus Mode (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd>):** Distraction-free full-screen writing environment with centered 760px typography, live word count, and reading time estimates.
+* **🍅 Integrated Pomodoro Timer:** 25 min work / 5 min break countdown with smooth harmonic Zen chime generated by Web Audio API.
+* **🌧️ Procedural Ambient Rain Audio:** Calibrated procedural pink noise generator simulating relaxing rain directly in the browser with volume control.
+* **🔒 End-to-End Client-Side Note Encryption (AES-GCM 256):** Password-protect sensitive notes with Web Crypto API (PBKDF2 + AES-GCM). Notes are stored encrypted on disk, with an interactive unlock card and zero snippet leakage in full-text searches.
+
+### 💡 6. In-App Interactive Tutorial & Guided Tour (v2.3)
+* **💡 Spotlight Onboarding Tour:** Visual guided walkthrough with dynamic screen spotlighting highlighting key features (Sidebar & Folders, Command Palette, Live Editor & Split Preview, Toolbar, Zen Focus Mode, and AES-256 Encryption) with card tooltips and keyboard navigation (<kbd>→</kbd>, <kbd>←</kbd>, <kbd>Esc</kbd>).
+* **⚡ "Superpowers" In-App Guide Tab:** Dedicated documentation tab inside the Guide Modal explaining all advanced capabilities with copyable tips and shortcuts.
+* **📝 Live Playground Demonstration Note:** Interactive note filled with real examples of Math, Mermaid diagrams, Callouts, and Encryption for hands-on learning.
+
+### 📽️ 7. Presentation, Reading & Export
+* **📽️ Slideshow / Presentation Mode (<kbd>F5</kbd>):** Splits notes into fullscreen presentation slides via `---` or `# ` headings, featuring a progress bar, slide counter, and keyboard navigation (<kbd>→</kbd>, <kbd>←</kbd>, <kbd>Space</kbd>).
+* **📖 Distraction-Free Reader Mode:** Clean typography overlay for reading without editor clutter.
+* **📄 Direct PDF Export & Print Styles:** High-definition A4 PDF generation via `html2pdf.js` alongside optimized `@media print` CSS.
+* **✨ LanguageTool AI Grammar & Spell Checker:** Side drawer with 1-click suggestion replacements for English and Spanish.
+
+### 🌐 8. Theming, i18n & Security
+* **🌐 Bilingual Internationalization (i18n):** Complete UI and toast notification support for **Spanish (ES)** and **English (EN)** with instant persistence.
+* **🌓 Seamless Dark & Light Mode:** *Zinc OLED* (`#08090d`) and *Editorial Paper* (`#fbfbfa`) palettes with synchronized Canvas and diagram themes.
+* **🛡️ Built-in Security & Sandboxing:** Strict path traversal protection (`resolveSafeNotePath`), zero-knowledge client encryption, and XSS protection via `DOMPurify`.
 
 ---
 
-## 🛠️ Tech Stack
+## ⌨️ Keyboard Shortcuts Reference
 
-### Backend
-* **[Node.js](https://nodejs.org/):** Server runtime environment.
-* **[Express.js](https://expressjs.com/):** Web framework providing RESTful API endpoints.
-* **[Multer](https://github.com/expressjs/multer):** Middleware for secure multipart file uploads (`uploads/`).
-* **[Marked](https://marked.js.org/):** Fast, lightweight markdown compiler.
-
-### Frontend
-* **Modern HTML5 & CSS3:** Custom CSS variables, fluid responsive layout, and glassmorphic UI.
-* **Vanilla JavaScript (ES6+):** Clean, reactive architecture without heavy frontend framework bloat.
-* **[DOMPurify](https://github.com/cure53/DOMPurify):** High-grade sanitizer against cross-site scripting (XSS).
-* **[Highlight.js](https://highlightjs.org/):** Code syntax highlighting engine.
-* **Google Fonts:** *Inter*, *Outfit*, and *JetBrains Mono*.
+| Shortcut | Action | Scope |
+| :--- | :--- | :--- |
+| <kbd>Ctrl</kbd> + <kbd>K</kbd> / <kbd>Cmd</kbd> + <kbd>K</kbd> | Open Command Palette & Deep Search | Global |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> | Toggle Zen Focus Mode (Distraction-Free) | Global |
+| <kbd>Ctrl</kbd> + <kbd>S</kbd> / <kbd>Cmd</kbd> + <kbd>S</kbd> | Save Note (Creates Snapshot) | Editor |
+| <kbd>Ctrl</kbd> + <kbd>B</kbd> | Toggle Bold | Editor Selection |
+| <kbd>Ctrl</kbd> + <kbd>I</kbd> | Toggle Italic | Editor Selection |
+| <kbd>Ctrl</kbd> + <kbd>P</kbd> | Export to PDF | Global |
+| <kbd>F5</kbd> | Launch Presentation Mode | Global |
+| <kbd>Tab</kbd> | Insert 2 spaces (indentation) | Editor |
+| <kbd>→</kbd> / <kbd>Space</kbd> / <kbd>Enter</kbd> | Next Slide | Presentation Mode |
+| <kbd>←</kbd> | Previous Slide | Presentation Mode |
+| <kbd>Esc</kbd> | Close Overlays (Zen, Palette, Versions, Graph, Reader, TOC) | Global |
 
 ---
 
-## 📂 Project Structure
+## 🔌 Backend REST API Reference
+
+| Method | Endpoint | Request Payload | Description |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/notes` | — | Returns JSON array of all saved `.md` filenames (including folders). |
+| `GET` | `/notes/search?q=...` | — | Full-text deep search returning matching notes and highlighted snippets. |
+| `GET` | `/notes/metadata` | — | Returns filenames, folders, `#tags`, and `[[WikiLinks]]`. |
+| `GET` | `/notes/:nombre/raw` | — | Returns raw Markdown text for editor loading. |
+| `GET` | `/notes/:nombre/html`| — | Returns pre-rendered HTML string. |
+| `POST` | `/notes/save` | `{ title: string, content: string, folder?: string }` | Saves note in `uploads/` and generates version snapshot. |
+| `DELETE` | `/notes/:nombre` | — | Permanently removes note file. |
+| `GET` | `/folders` | — | Returns array of existing folder names. |
+| `POST` | `/folders/create` | `{ folderName: string }` | Safely creates a new subfolder in `uploads/`. |
+| `GET` | `/notes/versions?filename=...` | — | Returns array of historical snapshot metadata. |
+| `GET` | `/notes/versions/:id?filename=...` | — | Returns raw content of specific snapshot. |
+| `POST` | `/notes/versions/:id/restore` | `{ filename: string }` | Replaces current note with selected version snapshot. |
+| `POST` | `/upload` | `multipart/form-data` (`file`) | Uploads `.md` file preserving original name. |
+| `POST` | `/grammar` | `{ text: string, language: string }` | Proxies text check to LanguageTool API. |
+
+---
+
+## 📂 Project Architecture
 
 ```plaintext
 markdown-note-taking-app/
 │
-├── public/                 # Static files served to the client
-│   ├── index.html          # Main HTML markup and UI layout
-│   ├── style.css           # Modern styles, themes, and split-screen CSS
-│   └── app.js              # Client-side logic, live rendering & event handlers
+├── app.js                  # Express backend: REST routes, metadata extractor, file I/O & proxy
+├── package.json            # Node.js project metadata & dependencies
+├── README.md               # User-facing documentation (this file)
+├── AGENTS.md               # AI Agent guidelines & Spec-Driven Development rules
 │
-├── uploads/                # Local storage directory for note files (.md)
-├── app.js                  # Express backend server and API endpoints
-├── package.json            # Dependencies and npm script configuration
-└── README.md               # Project documentation
+├── uploads/                # Directory where user notes (.md) are persisted
+│
+├── specs/                  # Formal specifications (Spec-Driven Development)
+│   ├── TEMPLATE.md         # Standard specification template
+│   ├── advanced-editing.md # Specs for Math, Mermaid, Callouts, Image paste
+│   ├── organization.md     # Specs for Tags, Pinned, WikiLinks, TOC
+│   └── graph-view.md       # Specs for 2D Force-Graph Knowledge View
+│
+└── public/                 # Static frontend assets served by Express
+    ├── index.html          # Semantic HTML layout, modals, drawers & CDN imports
+    ├── style.css           # Design tokens, Dark/Light themes, graph overlay & print rules
+    └── app.js              # Client logic: live parser, i18n, graph engine, CRUD, hotkeys
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quickstart & Testing
 
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed (v18 or higher recommended).
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed (v18 or higher recommended).
 
-### 1. Clone the repository
+### 2. Install & Start Server
 ```bash
-git clone https://github.com/your-username/markdown-note-taking-app.git
-cd markdown-note-taking-app
-```
-
-### 2. Install dependencies
-```bash
+# Install dependencies
 npm install
-```
 
-### 3. Start the application
-```bash
+# Verify syntax
+node -c app.js
+node -c public/app.js
+
+# Start local server
 node app.js
 ```
 
-### 4. Open in browser
-Open your browser and navigate to:
-```
-http://localhost:3000
-```
+### 3. Open in Browser
+Navigate to **`http://localhost:3000`** in your browser.
 
 ---
 
-## 🔌 API Reference
+## 🧪 Verification Checklist
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/notes` | Returns a list of all available note files. |
-| `GET` | `/notes/:nombre/raw` | Returns raw markdown text of a specific note for editing. |
-| `GET` | `/notes/:nombre/html` | Returns pre-rendered HTML content of a note. |
-| `POST` | `/notes/save` | Creates or updates a note (`{ title: string, content: string }`). |
-| `DELETE` | `/notes/:nombre` | Permanently deletes a note from the server. |
-| `POST` | `/upload` | Uploads a `.md` file via multipart form-data. |
-| `POST` | `/grammar` | Proxies text to LanguageTool for spelling and grammar inspection. |
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! To contribute:
-1. **Fork** the repository.
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a **Pull Request**.
+To test all capabilities:
+1. **Knowledge Graph View:** Click 🕸️ **Grafo** in the header. Hover over nodes to see link particles; click any node to jump to it. Use the search bar to highlight tags or titles.
+2. **WikiLinks & Tags:** Write `[[Nueva Idea]]` or `#proyecto` in the editor. Watch the tag cloud update in the sidebar, and click the WikiLink to jump/create.
+3. **Advanced Rendering:** Insert a formula (`$$\int x dx$$`), a diagram (` ```mermaid graph TD; A-->B ``` `), and an alert (`> [!TIP]`).
+4. **Image Paste / Drop:** Copy any image to your clipboard and paste (<kbd>Ctrl</kbd>+<kbd>V</kbd>) into the editor.
+5. **Presentation Mode:** Press <kbd>F5</kbd> to launch the slideshow; navigate with arrow keys and press <kbd>Esc</kbd> to exit.
+6. **Bilingual & Dark/Light Switch:** Change language (🇪🇸 / 🇺🇸) and theme (🌙 / ☀️) to verify instant adaptation.
 
 ---
 
 ## 📄 License
-
 This project is licensed under the [ISC License](LICENSE).

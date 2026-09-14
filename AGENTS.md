@@ -84,6 +84,7 @@ markdown-note-taking-app/
 
 ## 🎨 Frontend & Styling Standards
 
+* **Skill Reference:** All UI design, refactoring, and component creation must adhere to the design principles defined in [.agents/skills/frontend-design/SKILL.md](file:///c:/Users/pikor/OneDrive/Documentos/markdown-note-taking-app/.agents/skills/frontend-design/SKILL.md) (intentional typography, purposeful color tokens, action-driven motion, clean line lengths < 80 chars, and avoidance of AI clichés).
 * **CSS Custom Properties:** All colors, backgrounds, borders, and shadows must use CSS variables (e.g. `var(--bg-primary)`, `var(--text-primary)`, `var(--accent-primary)`) to guarantee seamless Dark and Light mode switching.
 * **No Framework Bloat:** Do not introduce heavy frontend frameworks (React/Vue/Angular) unless explicitly requested. Keep the code vanilla, fast, and dependency-light.
 * **External CDNs in `index.html`:**
@@ -91,6 +92,9 @@ markdown-note-taking-app/
   * `DOMPurify` — HTML sanitizer.
   * `highlight.js` — Syntax highlighter.
   * `html2pdf.js` — PDF generation.
+  * `force-graph.js` — 2D Knowledge Graph simulation.
+  * `katex.js` — Mathematical LaTeX formula rendering.
+  * `mermaid.js` — Visual diagram rendering.
 
 ---
 

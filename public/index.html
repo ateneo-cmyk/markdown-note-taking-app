@@ -30,6 +30,9 @@
   <!-- html2pdf.js (Generador de PDF profesional) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+  <!-- Force-Graph for 2D Interactive Knowledge Graph Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/force-graph@1.43.5/dist/force-graph.min.js"></script>
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -39,39 +42,70 @@
   <header class="app-header">
     <div class="logo-container">
       <div class="logo-icon">M↓</div>
-      <div class="app-title">Markdown Studio</div>
+      <div class="brand-text">
+        <div class="app-title">Markdown Studio</div>
+        <span class="app-badge">v2.0</span>
+      </div>
+    </div>
+
+    <!-- Indicador de estado del documento en vivo -->
+    <div class="header-center-status">
+      <span class="status-pulse-dot" id="header-status-dot"></span>
+      <span id="header-doc-status" data-i18n="headerReadyStatus">Listo</span>
     </div>
 
     <div class="header-actions">
-      <select id="lang-select" class="lang-select" title="Seleccionar idioma / Select language">
-        <option value="es">🇪🇸 Español</option>
-        <option value="en">🇺🇸 English</option>
-      </select>
+      <!-- Guardar principal -->
       <button id="btn-save" class="btn btn-primary" title="Guardar cambios (Ctrl+S)">
         <span>💾</span> <span data-i18n="btnSave">Guardar</span>
       </button>
-      <button id="btn-grammar" class="btn btn-grammar" title="Revisar ortografía y gramática">
-        <span>✨</span> <span data-i18n="btnGrammar">Gramática</span>
-      </button>
-      <button id="btn-toc" class="btn btn-secondary" title="Tabla de Contenidos (TOC)">
-        <span>📑</span> <span data-i18n="btnToc">Índice</span>
-      </button>
-      <button id="btn-presentation" class="btn btn-secondary" title="Modo Presentación (F5)">
-        <span>📽️</span> <span data-i18n="btnPresentation">Presentar</span>
-      </button>
-      <button id="btn-export-pdf" class="btn btn-secondary" title="Exportar a PDF">
-        <span>📄</span> <span data-i18n="btnExportPdf">PDF</span>
-      </button>
-      <button id="btn-download" class="btn btn-secondary" title="Descargar archivo Markdown">
-        <span>📥</span> <span data-i18n="btnDownload">Descargar</span>
-      </button>
-      <button id="btn-reader" class="btn icon-btn" title="Modo Lectura / Reader Mode">
-        📖
-      </button>
-      <button id="btn-delete" class="btn btn-danger" title="Eliminar nota actual" style="display: none;">
+
+      <!-- Grupo de vistas y utilidades -->
+      <div class="header-btn-group">
+        <button id="btn-reader" class="btn btn-ghost icon-btn" title="Modo Lectura / Reader Mode">
+          📖
+        </button>
+        <button id="btn-presentation" class="btn btn-ghost icon-btn" title="Modo Presentación (F5)">
+          📽️
+        </button>
+        <button id="btn-toc" class="btn btn-ghost icon-btn" title="Tabla de Contenidos (TOC)">
+          📑
+        </button>
+        <button id="btn-history" class="btn btn-ghost icon-btn" title="Historial de Versiones / Version History">
+          ⏳
+        </button>
+        <button id="btn-zen-mode" class="btn btn-ghost icon-btn" title="Modo Zen (Ctrl+Shift+Z)">
+          🧘
+        </button>
+        <button id="btn-grammar" class="btn btn-grammar-pill" title="Revisar ortografía y gramática">
+          <span>✨</span> <span data-i18n="btnGrammar">Gramática</span>
+        </button>
+      </div>
+
+      <div class="header-divider"></div>
+
+      <!-- Exportar / Descargar -->
+      <div class="header-btn-group">
+        <button id="btn-export-pdf" class="btn btn-secondary btn-sm" title="Exportar a PDF">
+          <span>📄</span> <span data-i18n="btnExportPdf">PDF</span>
+        </button>
+        <button id="btn-download" class="btn btn-secondary btn-sm" title="Descargar archivo Markdown">
+          <span>📥</span> <span data-i18n="btnDownload">MD</span>
+        </button>
+      </div>
+
+      <button id="btn-delete" class="btn btn-danger btn-sm" title="Eliminar nota actual" style="display: none;">
         <span>🗑️</span>
       </button>
-      <button id="btn-theme" class="btn icon-btn" title="Cambiar tema Claro / Oscuro">
+
+      <div class="header-divider"></div>
+
+      <!-- Preferencias de usuario -->
+      <select id="lang-select" class="lang-select" title="Seleccionar idioma / Select language">
+        <option value="es">🇪🇸 ES</option>
+        <option value="en">🇺🇸 EN</option>
+      </select>
+      <button id="btn-theme" class="btn icon-btn theme-toggle-btn" title="Cambiar tema Claro / Oscuro">
         🌙
       </button>
     </div>
@@ -87,9 +121,34 @@
           <span>➕</span> <span data-i18n="btnNewNote">Nueva Nota</span>
         </button>
 
+        <!-- Navegación Inteligente / Accesos Rápidos -->
+        <nav class="sidebar-nav-group" aria-label="Accesos rápidos del espacio de trabajo">
+          <button id="btn-daily-note" class="sidebar-nav-item" title="Nota Diaria de Hoy / Daily Note">
+            <span class="nav-icon">📅</span>
+            <span class="nav-text" data-i18n="btnDailyNote">Hoy</span>
+            <span class="nav-badge" id="daily-note-badge">Auto</span>
+          </button>
+          <button id="btn-graph" class="sidebar-nav-item" title="Vista de Grafo de Conocimiento / Knowledge Graph">
+            <span class="nav-icon">🕸️</span>
+            <span class="nav-text" data-i18n="btnGraph">Grafo</span>
+            <span class="nav-badge">2D</span>
+          </button>
+          <button id="btn-templates" class="sidebar-nav-item" title="Plantillas de Notas / Templates">
+            <span class="nav-icon">📋</span>
+            <span class="nav-text" data-i18n="btnTemplates">Plantillas</span>
+            <span class="nav-badge">5</span>
+          </button>
+          <button id="btn-guide" class="sidebar-nav-item" title="Guía de Usuario & Atajos (?) / Help Guide">
+            <span class="nav-icon">💡</span>
+            <span class="nav-text" data-i18n="btnGuide">Guía & Tutorial</span>
+            <span class="nav-badge">?</span>
+          </button>
+        </nav>
+
         <div class="search-box">
           <span class="search-icon">🔍</span>
           <input type="text" id="search-notes" class="search-input" placeholder="Buscar notas..." data-i18n-placeholder="searchPlaceholder">
+          <kbd class="search-kbd-badge" id="search-palette-trigger" title="Paleta de Comandos (Ctrl+K)">Ctrl+K</kbd>
         </div>
 
         <form id="upload-form" class="upload-card">
@@ -98,6 +157,17 @@
           </label>
           <input type="file" id="note-file" name="file" accept=".md,.txt,.markdown" style="display: none;">
         </form>
+      </div>
+
+      <!-- Sección de Carpetas -->
+      <div class="folders-section">
+        <div class="folders-header">
+          <span class="folders-title">📁 <span data-i18n="foldersTitle">Carpetas</span></span>
+          <button id="btn-new-folder" class="btn-icon-folder" title="Nueva Carpeta / New Folder">➕</button>
+        </div>
+        <div id="folders-container" class="folders-container">
+          <!-- Chips y lista de carpetas generados dinámicamente -->
+        </div>
       </div>
 
       <!-- Sección de Filtro por Etiquetas (#tags) -->
@@ -122,36 +192,64 @@
       <!-- Barra de título de la nota -->
       <div class="note-meta-bar">
         <button id="btn-pin-active" class="btn icon-btn pin-btn" title="Fijar nota / Pin note">☆</button>
+        <button id="btn-lock-note" class="btn icon-btn lock-btn" title="Cifrar con contraseña / Encrypt with password">🔓</button>
+        <span id="note-folder-badge" class="note-folder-badge" style="display: none;" title="Carpeta / Folder">
+          📁 <span id="note-folder-name"></span>
+        </span>
         <input type="text" id="note-title" class="title-input" placeholder="Título de la nota (ej: Mi primera nota)..." data-i18n-placeholder="titlePlaceholder" value="Nota sin título">
       </div>
 
-      <!-- Barra de herramientas Markdown -->
+      <!-- Barra de herramientas Markdown Segmentada -->
       <div class="markdown-toolbar">
-        <button class="tool-btn" data-action="h1" title="Encabezado 1"><b>H1</b></button>
-        <button class="tool-btn" data-action="h2" title="Encabezado 2"><b>H2</b></button>
-        <button class="tool-btn" data-action="h3" title="Encabezado 3"><b>H3</b></button>
-        <div class="tool-separator"></div>
-        <button class="tool-btn" data-action="bold" title="Negrita (Ctrl+B)"><b>B</b></button>
-        <button class="tool-btn" data-action="italic" title="Cursiva (Ctrl+I)"><i>I</i></button>
-        <button class="tool-btn" data-action="strike" title="Tachado"><s>S</s></button>
-        <div class="tool-separator"></div>
-        <button class="tool-btn" data-action="mermaid" title="Diagrama (Mermaid)"><span data-i18n="toolDiagram">📊 Diagrama</span></button>
-        <button class="tool-btn" data-action="math" title="Fórmula Matemática (KaTeX)"><span data-i18n="toolMath">🧮 Fórmula</span></button>
-        <button class="tool-btn" data-action="callout" title="Alerta / Callout"><span data-i18n="toolCallout">💡 Alerta</span></button>
-        <div class="tool-separator"></div>
-        <button class="tool-btn" data-action="quote" title="Cita">❝</button>
-        <button class="tool-btn" data-action="code" title="Código en línea"><code>&lt;&gt;</code></button>
-        <button class="tool-btn" data-action="codeblock" title="Bloque de código"><code>{ }</code></button>
-        <div class="tool-separator"></div>
-        <button class="tool-btn" data-action="link" title="Enlace">🔗</button>
-        <button class="tool-btn" data-action="ul" title="Lista con viñetas"><span data-i18n="toolUl">• Lista</span></button>
-        <button class="tool-btn" data-action="ol" title="Lista numerada"><span data-i18n="toolOl">1. Lista</span></button>
-        <button class="tool-btn" data-action="task" title="Lista de tareas"><span data-i18n="toolTask">☑ Tarea</span></button>
-        <button class="tool-btn" data-action="table" title="Tabla"><span data-i18n="toolTable">▦ Tabla</span></button>
+        <div class="toolbar-group" aria-label="Encabezados">
+          <button class="tool-btn" data-action="h1" title="Encabezado 1"><b>H1</b></button>
+          <button class="tool-btn" data-action="h2" title="Encabezado 2"><b>H2</b></button>
+          <button class="tool-btn" data-action="h3" title="Encabezado 3"><b>H3</b></button>
+        </div>
+
+        <div class="toolbar-group" aria-label="Formato de texto">
+          <button class="tool-btn" data-action="bold" title="Negrita (Ctrl+B)"><b>B</b></button>
+          <button class="tool-btn" data-action="italic" title="Cursiva (Ctrl+I)"><i>I</i></button>
+          <button class="tool-btn" data-action="strike" title="Tachado"><s>S</s></button>
+          <button class="tool-btn" data-action="quote" title="Cita">❝</button>
+        </div>
+
+        <div class="toolbar-group" aria-label="Componentes inteligentes">
+          <button class="tool-btn" data-action="mermaid" title="Diagrama (Mermaid)"><span data-i18n="toolDiagram">📊 Diagrama</span></button>
+          <button class="tool-btn" data-action="math" title="Fórmula Matemática (KaTeX)"><span data-i18n="toolMath">🧮 Fórmula</span></button>
+          <button class="tool-btn" data-action="callout" title="Alerta / Callout"><span data-i18n="toolCallout">💡 Alerta</span></button>
+        </div>
+
+        <div class="toolbar-group" aria-label="Estructuras y Código">
+          <button class="tool-btn" data-action="link" title="Enlace">🔗</button>
+          <button class="tool-btn" data-action="code" title="Código en línea"><code>&lt;&gt;</code></button>
+          <button class="tool-btn" data-action="codeblock" title="Bloque de código"><code>{ }</code></button>
+          <button class="tool-btn" data-action="table" title="Tabla"><span data-i18n="toolTable">▦ Tabla</span></button>
+        </div>
+
+        <div class="toolbar-group" aria-label="Listas y Tareas">
+          <button class="tool-btn" data-action="ul" title="Lista con viñetas"><span data-i18n="toolUl">• Lista</span></button>
+          <button class="tool-btn" data-action="ol" title="Lista numerada"><span data-i18n="toolOl">1. Lista</span></button>
+          <button class="tool-btn" data-action="task" title="Lista de tareas"><span data-i18n="toolTask">☑ Tarea</span></button>
+        </div>
+      </div>
+
+      <!-- Pantalla de desbloqueo cuando una nota está cifrada -->
+      <div id="decrypt-screen" class="decrypt-screen" style="display: none;">
+        <div class="decrypt-card">
+          <div class="lock-glow-icon">🔒</div>
+          <h3 data-i18n="lockedNoteTitle">Nota Cifrada y Protegida</h3>
+          <p class="decrypt-subtitle" data-i18n="lockedNoteDesc">Esta nota está protegida con cifrado de extremo a extremo AES-GCM 256. Introduce tu contraseña para desbloquearla.</p>
+          <div class="decrypt-input-group">
+            <input type="password" id="decrypt-password-input" class="decrypt-input" placeholder="Contraseña de la nota..." data-i18n-placeholder="passwordPlaceholder">
+            <button id="btn-decrypt-submit" class="btn btn-primary" data-i18n="btnUnlock">Desbloquear</button>
+          </div>
+          <div id="decrypt-error" class="decrypt-error" style="display: none;" data-i18n="wrongPassword">Contraseña incorrecta. Inténtalo de nuevo.</div>
+        </div>
       </div>
 
       <!-- Split: Editor y Vista Previa -->
-      <div class="editor-split">
+      <div class="editor-split" id="editor-split-container">
         
         <!-- Panel Izquierdo: Editor Raw -->
         <div class="pane pane-editor">
@@ -184,7 +282,16 @@
           <span>•</span>
           <span id="stat-lines">1 líneas</span>
         </div>
-        <div id="save-status" data-i18n="savedStatus">Todos los cambios están al día</div>
+        <div class="status-right-group">
+          <div class="autosave-toggle-container">
+            <label class="switch" title="Activar/Desactivar Autoguardado">
+              <input type="checkbox" id="toggle-autosave" checked>
+              <span class="slider"></span>
+            </label>
+            <span class="autosave-label" data-i18n="autosaveLabel">Autoguardado</span>
+          </div>
+          <div id="save-status" data-i18n="savedStatus">Todos los cambios están al día</div>
+        </div>
       </footer>
 
     </main>
@@ -255,6 +362,228 @@
     <div class="reader-scroll-container">
       <div id="reader-content" class="reader-content markdown-body">
         <!-- Contenido renderizado -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal / Overlay de Vista de Grafo -->
+  <div id="graph-overlay" class="graph-overlay" style="display: none;">
+    <div class="graph-toolbar">
+      <div class="graph-title">
+        <span>🕸️</span> <span data-i18n="graphModalTitle">Grafo de Conocimiento</span>
+      </div>
+      <div class="graph-search-container">
+        <input type="text" id="graph-search-input" class="graph-search-input" placeholder="Buscar nodo o etiqueta..." data-i18n-placeholder="graphSearchPlaceholder">
+      </div>
+      <div class="graph-stats-chip" id="graph-stats-chip">
+        <span id="graph-node-count">0</span> <span data-i18n="graphNodes">nodos</span> • 
+        <span id="graph-link-count">0</span> <span data-i18n="graphLinks">enlaces</span>
+      </div>
+      <div class="graph-actions">
+        <button id="btn-graph-reset" class="btn btn-secondary" title="Reiniciar vista / Reset zoom & position">⟲</button>
+        <button id="btn-close-graph" class="icon-btn" title="Cerrar / Close (Esc)">✕</button>
+      </div>
+    </div>
+    <div id="graph-canvas-container" class="graph-canvas-container">
+      <!-- Canvas generado por force-graph -->
+    </div>
+    <div class="graph-footer-hint">
+      <span data-i18n="graphHint">Haz clic en un nodo para abrir la nota • Rueda para zoom • Arrastra para explorar</span>
+    </div>
+  </div>
+
+  <!-- Modal de Selector de Plantillas -->
+  <div id="templates-modal" class="templates-modal" style="display: none;">
+    <div class="templates-modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>📋</span> <span data-i18n="templatesModalTitle">Plantillas de Notas</span>
+        </div>
+        <button id="btn-close-templates" class="icon-btn" title="Cerrar (Esc)">✕</button>
+      </div>
+      <div class="templates-grid" id="templates-grid">
+        <!-- Renderizado dinámico de tarjetas de plantillas -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Guía / Tutorial Interactivo -->
+  <div id="guide-modal" class="guide-modal" style="display: none;">
+    <div class="guide-modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>💡</span> <span data-i18n="guideModalTitle">Guía Rápida & Tutorial</span>
+        </div>
+        <button id="btn-close-guide" class="icon-btn" title="Cerrar (Esc)">✕</button>
+      </div>
+      <div class="guide-tabs">
+        <button class="guide-tab-btn active" data-tab="start" data-i18n="guideTabStart">🚀 Inicio Rápido</button>
+        <button class="guide-tab-btn" data-tab="power" data-i18n="guideTabPower">⚡ Superpoderes</button>
+        <button class="guide-tab-btn" data-tab="graph" data-i18n="guideTabGraph">🕸️ Grafo & Enlaces</button>
+        <button class="guide-tab-btn" data-tab="advanced" data-i18n="guideTabAdvanced">📊 Fórmulas & Diagramas</button>
+        <button class="guide-tab-btn" data-tab="slides" data-i18n="guideTabSlides">📽️ Presentación & PDF</button>
+        <button class="guide-tab-btn" data-tab="shortcuts" data-i18n="guideTabShortcuts">⌨️ Atajos</button>
+      </div>
+      <div class="guide-content-body" id="guide-content-body">
+        <!-- Renderizado dinámico de la pestaña activa -->
+      </div>
+      <div class="guide-modal-footer">
+        <button id="btn-start-interactive-tour" class="btn btn-secondary">
+          <span>🎯</span> <span data-i18n="btnStartTour">Iniciar Tour Guiado</span>
+        </button>
+        <button id="btn-load-playground" class="btn btn-primary">
+          <span>✨</span> <span data-i18n="btnLoadPlayground">Cargar Nota Playground de Ejemplo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Paleta de Comandos (Ctrl + K) -->
+  <div id="command-palette-modal" class="command-palette-overlay" style="display: none;">
+    <div class="palette-dialog">
+      <div class="palette-header">
+        <span class="palette-search-icon">🔍</span>
+        <input type="text" id="palette-input" class="palette-input" placeholder="Escribe un comando o busca en notas..." data-i18n-placeholder="palettePlaceholder" autocomplete="off">
+        <kbd class="palette-esc-badge">ESC</kbd>
+      </div>
+      <div id="palette-results" class="palette-results">
+        <!-- Resultados dinámicos de comandos y notas -->
+      </div>
+      <div class="palette-footer">
+        <span><kbd>↑</kbd> <kbd>↓</kbd> <span data-i18n="paletteHintNav">Navegar</span></span>
+        <span><kbd>↵</kbd> <span data-i18n="paletteHintSelect">Seleccionar</span></span>
+        <span><kbd>esc</kbd> <span data-i18n="paletteHintClose">Cerrar</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Historial de Versiones -->
+  <div id="versions-modal" class="versions-overlay" style="display: none;">
+    <div class="versions-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⏳</span> <span data-i18n="versionsModalTitle">Historial de Versiones</span>
+        </div>
+        <button id="btn-close-versions" class="icon-btn" title="Cerrar (Esc)">✕</button>
+      </div>
+      <div class="versions-content">
+        <div class="versions-sidebar">
+          <div class="versions-sidebar-header" data-i18n="versionsSnapshotsTitle">Revisiones guardadas</div>
+          <div id="versions-list" class="versions-list">
+            <!-- Lista de versiones -->
+          </div>
+        </div>
+        <div class="version-preview-pane">
+          <div class="version-preview-header">
+            <span id="version-preview-meta" class="version-preview-meta" data-i18n="selectVersionPreview">Selecciona una versión para previsualizar</span>
+            <button id="btn-restore-version" class="btn btn-primary btn-sm" style="display: none;">
+              <span>⏮️</span> <span data-i18n="btnRestoreVersion">Restaurar esta versión</span>
+            </button>
+          </div>
+          <div id="version-preview-content" class="version-preview-body markdown-body">
+            <!-- Previsualización de versión -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cifrado con Contraseña (AES-GCM 256) -->
+  <div id="encrypt-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-dialog encrypt-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🔒</span> <span data-i18n="encryptModalTitle">Cifrado de Nota (AES-GCM 256)</span>
+        </div>
+        <button id="btn-close-encrypt" class="icon-btn" title="Cerrar (Esc)">✕</button>
+      </div>
+      <div class="modal-body encrypt-modal-body">
+        <p class="encrypt-modal-info" data-i18n="encryptModalInfo">
+          Protege esta nota con una clave secreta. El contenido se cifrará de extremo a extremo en tu navegador antes de guardarse en el disco. Si olvidas la clave, no será posible recuperar el contenido.
+        </p>
+        <div class="form-group">
+          <label for="encrypt-password" data-i18n="lblPassword">Contraseña:</label>
+          <input type="password" id="encrypt-password" class="form-control" placeholder="Introduce tu contraseña..." autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <label for="encrypt-password-confirm" data-i18n="lblConfirmPassword">Confirmar contraseña:</label>
+          <input type="password" id="encrypt-password-confirm" class="form-control" placeholder="Repite tu contraseña..." autocomplete="new-password">
+        </div>
+        <div id="encrypt-modal-error" class="encrypt-error-msg" style="display: none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-remove-encryption" class="btn btn-danger" style="display: none;" data-i18n="btnRemoveEncryption">Quitar Cifrado</button>
+        <button id="btn-cancel-encrypt" class="btn btn-secondary" data-i18n="btnCancel">Cancelar</button>
+        <button id="btn-apply-encrypt" class="btn btn-primary" data-i18n="btnApplyEncrypt">Cifrar Nota</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay Modo Zen de Concentración -->
+  <div id="zen-overlay" class="zen-overlay" style="display: none;">
+    <!-- Barra flotante superior de controles zen -->
+    <header class="zen-floating-bar" id="zen-floating-bar">
+      <div class="zen-bar-left">
+        <span class="zen-title-preview" id="zen-note-title">Nota en Modo Zen</span>
+      </div>
+      <div class="zen-bar-center">
+        <!-- Pomodoro Timer -->
+        <div class="zen-pomodoro-group">
+          <span class="pomodoro-icon">🍅</span>
+          <span id="zen-pomodoro-display" class="zen-pomodoro-time">25:00</span>
+          <button id="btn-zen-pomodoro-toggle" class="btn btn-ghost btn-xs" title="Iniciar/Pausar Pomodoro">▶</button>
+          <button id="btn-zen-pomodoro-reset" class="btn btn-ghost btn-xs" title="Reiniciar Pomodoro">↺</button>
+        </div>
+        <div class="zen-bar-divider"></div>
+        <!-- Sonido de Lluvia relajante procedural -->
+        <div class="zen-ambient-group">
+          <button id="btn-zen-ambient-toggle" class="btn btn-ghost btn-xs" title="Activar/Desactivar Lluvia Relajante">
+            <span id="zen-ambient-icon">🌧️</span> <span data-i18n="zenRain">Lluvia</span>
+          </button>
+          <input type="range" id="zen-ambient-volume" class="zen-volume-slider" min="0" max="1" step="0.05" value="0.5" title="Volumen de lluvia">
+        </div>
+      </div>
+      <div class="zen-bar-right">
+        <button id="btn-exit-zen" class="btn btn-secondary btn-sm" title="Salir del Modo Zen (Esc)">
+          <span>✕</span> <span data-i18n="btnExitZen">Salir de Zen</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Editor centrado Zen -->
+    <div class="zen-editor-wrapper">
+      <textarea id="zen-textarea" class="zen-textarea" placeholder="Escribe con concentración total..." data-i18n-placeholder="zenPlaceholder"></textarea>
+    </div>
+
+    <!-- Barra inferior sutil con estadísticas -->
+    <footer class="zen-footer" id="zen-footer">
+      <span id="zen-stat-words">0 palabras</span>
+      <span>•</span>
+      <span id="zen-stat-reading-time">1 min de lectura</span>
+      <span>•</span>
+      <span data-i18n="zenEscapeHint">Presiona Esc para salir</span>
+    </footer>
+  </div>
+
+  <!-- Overlay del Tour Interactivo Guiado -->
+  <div id="interactive-tour-overlay" class="interactive-tour-overlay" style="display: none;">
+    <div id="tour-spotlight" class="tour-spotlight"></div>
+    <div id="tour-card" class="tour-card">
+      <div class="tour-card-header">
+        <span id="tour-step-badge" class="tour-step-badge">Paso 1 de 6</span>
+        <button id="btn-close-tour" class="icon-btn tour-close-btn" title="Cerrar tour (Esc)">✕</button>
+      </div>
+      <div class="tour-card-body">
+        <h4 id="tour-step-title" class="tour-step-title">Título del Paso</h4>
+        <p id="tour-step-desc" class="tour-step-desc">Descripción del paso...</p>
+        <div id="tour-step-hint" class="tour-step-hint">Atajo: <kbd>Ctrl+K</kbd></div>
+      </div>
+      <div class="tour-card-footer">
+        <button id="btn-tour-skip" class="btn btn-ghost btn-sm" data-i18n="tourBtnSkip">Saltar Tour</button>
+        <div class="tour-nav-buttons">
+          <button id="btn-tour-prev" class="btn btn-secondary btn-sm" data-i18n="tourBtnPrev">Anterior</button>
+          <button id="btn-tour-next" class="btn btn-primary btn-sm" data-i18n="tourBtnNext">Siguiente</button>
+        </div>
       </div>
     </div>
   </div>
